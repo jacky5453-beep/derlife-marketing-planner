@@ -1,0 +1,2347 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>得來素 行銷企劃系統</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brand: #2d6a4f;
+  --brand-light: #d8f3dc;
+  --brand-mid: #52b788;
+  --accent: #e76f51;
+  --accent-light: #fde8e4;
+  --blue: #2563eb;
+  --blue-light: #eff4ff;
+  --yellow: #d97706;
+  --yellow-light: #fefce8;
+  --purple: #7c3aed;
+  --purple-light: #f5f3ff;
+  --red: #dc2626;
+  --red-light: #fef2f2;
+  --text: #1a1d23;
+  --text-2: #4b5563;
+  --text-3: #9ca3af;
+  --border: #e5e7eb;
+  --border-2: #f3f4f6;
+  --bg: #f9fafb;
+  --white: #ffffff;
+  --shadow: 0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.09);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,.12);
+  --r: 10px;
+  --r-sm: 6px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
+.app{display:flex;height:100vh;overflow:hidden}
+
+/* SIDEBAR */
+.sidebar{width:210px;background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.logo{padding:18px 16px 14px;border-bottom:1px solid var(--border-2)}
+.logo-brand{font-size:15px;font-weight:700;color:var(--brand)}
+.logo-sub{font-size:11px;color:var(--text-3);margin-top:2px}
+.year-pick{margin:10px 12px 2px;display:flex;align-items:center;gap:6px;background:var(--brand-light);padding:8px 10px;border-radius:var(--r-sm)}
+.year-pick select{font-family:inherit;font-size:13px;font-weight:600;color:var(--brand);background:none;border:none;outline:none;cursor:pointer;flex:1}
+.nav-sec{font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.7px;padding:14px 14px 5px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 14px;margin:1px 8px;border-radius:var(--r-sm);cursor:pointer;color:var(--text-2);font-size:13px;transition:all .15s}
+.nav-item:hover{background:var(--bg);color:var(--text)}
+.nav-item.active{background:var(--brand-light);color:var(--brand);font-weight:600}
+.nav-item .ni{font-size:15px;width:18px;text-align:center}
+.nav-badge{margin-left:auto;background:var(--accent);color:white;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.page-title{font-size:15px;font-weight:700}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.notif-btn{position:relative;background:none;border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 10px;cursor:pointer;font-size:15px;color:var(--text-2);transition:background .15s}
+.notif-btn:hover{background:var(--bg)}
+.notif-dot{position:absolute;top:4px;right:5px;width:7px;height:7px;background:var(--accent);border-radius:50%;border:2px solid white}
+.content{flex:1;overflow-y:auto;padding:20px 24px}
+
+/* BUTTONS */
+.btn{padding:7px 14px;border-radius:var(--r-sm);font-family:inherit;font-size:13px;font-weight:500;border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.btn-primary{background:var(--brand);color:white}.btn-primary:hover{background:#1b5038}
+.btn-brand2{background:var(--brand-light);color:var(--brand)}.btn-brand2:hover{background:#b7e4c7}
+.btn-outline{background:none;color:var(--text-2);border:1px solid var(--border)}.btn-outline:hover{background:var(--bg);color:var(--text)}
+.btn-accent{background:var(--accent);color:white}.btn-accent:hover{background:#c85a3f}
+.btn-danger{background:var(--red-light);color:var(--red)}.btn-danger:hover{background:#fee2e2}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn-xs{padding:3px 8px;font-size:11px}
+
+/* CARD */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow)}
+.card-header{padding:14px 18px;border-bottom:1px solid var(--border-2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.card-title{font-size:14px;font-weight:600}
+.card-body{padding:18px}
+
+/* PAGES */
+.page{display:none}.page.active{display:block}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:20px}
+.stat{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow)}
+.stat-label{font-size:11px;color:var(--text-3);font-weight:500;margin-bottom:4px}
+.stat-value{font-size:22px;font-weight:700;line-height:1.2}
+.stat-sub{font-size:11px;color:var(--text-2);margin-top:3px}
+
+/* ======= TIMELINE / GANTT ======= */
+.tl-container{overflow-x:auto;overflow-y:visible}
+.tl-wrap{min-width:1200px}
+.tl-header{display:flex;border-bottom:2px solid var(--border);position:sticky;top:0;background:var(--white);z-index:10}
+.tl-row-label{width:220px;flex-shrink:0;padding:8px 12px;font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase}
+.tl-months{flex:1;display:flex}
+.tl-month{flex:1;text-align:center;padding:8px 0;font-size:12px;font-weight:600;color:var(--text-2);border-left:1px solid var(--border-2);min-width:80px}
+.tl-body{}
+.tl-row{display:flex;align-items:stretch;border-bottom:1px solid var(--border-2);min-height:42px}
+.tl-row:hover{background:#fafbff}
+.tl-row-info{width:220px;flex-shrink:0;padding:8px 12px;display:flex;align-items:center;gap:8px;border-right:1px solid var(--border-2)}
+.tl-row-name{font-size:12px;font-weight:500;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tl-row-cat{font-size:10px;padding:1px 6px;border-radius:4px;white-space:nowrap}
+.tl-grid{flex:1;display:flex;position:relative}
+.tl-cell{flex:1;border-left:1px solid var(--border-2);min-width:80px;position:relative}
+.tl-cell.today-col{background:rgba(37,99,235,0.03)}
+.tl-bar-wrap{position:absolute;top:50%;transform:translateY(-50%);height:22px;z-index:2}
+.tl-bar{height:100%;border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:10px;font-weight:600;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;transition:opacity .15s;position:relative}
+.tl-bar:hover{opacity:.85}
+.tl-bar .bar-tip{position:absolute;bottom:calc(100%+6px);left:50%;transform:translateX(-50%);background:var(--text);color:white;padding:5px 10px;border-radius:5px;font-size:11px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;z-index:100}
+.tl-bar:hover .bar-tip{opacity:1}
+.today-line{position:absolute;top:0;bottom:0;width:2px;background:var(--blue);opacity:.5;z-index:5;pointer-events:none}
+.tl-controls{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.tl-filter{display:flex;gap:6px;flex-wrap:wrap}
+.tl-filter-btn{padding:4px 12px;border-radius:20px;font-size:12px;border:1px solid var(--border);background:var(--white);cursor:pointer;color:var(--text-2);transition:all .15s}
+.tl-filter-btn.on{background:var(--brand);color:white;border-color:var(--brand)}
+/* Day view */
+.day-header{display:flex;flex-wrap:nowrap;border-bottom:2px solid var(--border);background:var(--white)}
+.day-label{width:200px;flex-shrink:0;padding:6px 10px;font-size:11px;font-weight:600;color:var(--text-3)}
+.day-cells{flex:1;display:flex;overflow:hidden}
+.day-col{min-width:32px;flex:1;text-align:center;padding:4px 0;font-size:9px;color:var(--text-3);border-left:1px solid var(--border-2)}
+.day-col.weekend{background:#fdf2f8;color:#9d174d}
+.day-col.is-today{background:var(--blue-light);color:var(--blue);font-weight:700}
+.day-row{display:flex;border-bottom:1px solid var(--border-2);min-height:34px}
+.day-row:hover{background:#fafbff}
+.day-row-info{width:200px;flex-shrink:0;padding:6px 10px;display:flex;align-items:center;gap:6px;border-right:1px solid var(--border-2);font-size:11px;font-weight:500;overflow:hidden}
+.day-bar{position:absolute;height:18px;top:50%;transform:translateY(-50%);border-radius:3px;opacity:.9;cursor:pointer}
+.day-grid{flex:1;display:flex;position:relative}
+.day-cell{min-width:32px;flex:1;border-left:1px solid var(--border-2);position:relative}
+.day-cell.weekend{background:#fdf2f822}
+
+/* ======= PROJECTS ======= */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.proj-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;cursor:pointer;transition:all .2s;position:relative;box-shadow:var(--shadow)}
+.proj-card:hover{box-shadow:var(--shadow-md);border-color:var(--brand-mid)}
+.proj-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.proj-card-title{font-size:13px;font-weight:600;flex:1;padding-right:8px}
+.proj-card-meta{font-size:11px;color:var(--text-3);margin-bottom:10px;display:flex;flex-wrap:wrap;gap:6px}
+.proj-card-dates{font-size:11px;color:var(--text-2);margin-bottom:10px}
+.proj-card-depts{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+.dept-tag{font-size:10px;padding:2px 7px;border-radius:4px;background:var(--bg);color:var(--text-2);border:1px solid var(--border)}
+.proj-card-footer{display:flex;align-items:center;justify-content:space-between}
+.proj-card-actions{display:flex;gap:4px;opacity:0;transition:opacity .2s}
+.proj-card:hover .proj-card-actions{opacity:1}
+.progress-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;flex:1;margin-right:8px}
+.progress-fill{height:100%;border-radius:3px;background:var(--brand);transition:width .3s}
+.archive-badge{position:absolute;top:12px;right:12px;font-size:9px;padding:2px 6px;border-radius:4px;background:var(--bg);color:var(--text-3);border:1px solid var(--border)}
+
+/* PROJECT DETAIL */
+.proj-detail{display:grid;grid-template-columns:1fr 320px;gap:20px}
+.proj-tasks{margin-top:16px}
+.task-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border-2)}
+.task-row:last-child{border-bottom:none}
+.task-check{width:18px;height:18px;border-radius:4px;border:2px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.task-check.done{background:var(--brand);border-color:var(--brand);color:white;font-size:10px}
+.task-name{flex:1;font-size:13px}.task-name.done-text{text-decoration:line-through;color:var(--text-3)}
+.task-date{font-size:11px;color:var(--text-3)}
+.task-dept{font-size:10px;padding:1px 6px;border-radius:4px;background:var(--bg);color:var(--text-2)}
+.task-due-warn{color:var(--red);font-weight:600}
+.task-due-soon{color:var(--yellow);font-weight:600}
+
+/* MODAL */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:999;align-items:center;justify-content:center;padding:16px}
+.mo.open{display:flex}
+.mo-box{background:var(--white);border-radius:12px;box-shadow:var(--shadow-lg);width:100%;max-width:600px;max-height:90vh;overflow-y:auto;animation:moin .2s ease}
+.mo-box.wide{max-width:780px}
+@keyframes moin{from{opacity:0;transform:translateY(-10px) scale(.98)}to{opacity:1;transform:none}}
+.mo-head{padding:18px 22px 14px;border-bottom:1px solid var(--border-2);display:flex;align-items:center;justify-content:space-between}
+.mo-title{font-size:15px;font-weight:700}
+.mo-close{background:none;border:none;cursor:pointer;color:var(--text-3);font-size:18px;padding:2px;border-radius:4px;transition:color .15s}
+.mo-close:hover{color:var(--text)}
+.mo-body{padding:20px 22px}
+.mo-foot{padding:14px 22px;border-top:1px solid var(--border-2);display:flex;justify-content:flex-end;gap:8px}
+
+/* FORM */
+.fg{margin-bottom:14px}
+.fl{display:block;font-size:12px;font-weight:500;color:var(--text-2);margin-bottom:5px}
+.fc{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:var(--r-sm);font-family:inherit;font-size:13px;color:var(--text);background:var(--white);outline:none;transition:border-color .15s}
+.fc:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-light)}
+.fc-sm{padding:5px 9px;font-size:12px}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.fc[type=color]{padding:3px 6px;height:34px;cursor:pointer}
+textarea.fc{resize:vertical}
+
+/* SECTION LABEL */
+.sec-label{font-size:12px;font-weight:700;color:var(--brand);background:var(--brand-light);padding:5px 10px;border-radius:var(--r-sm);margin-bottom:10px;margin-top:4px;display:inline-block}
+
+/* DEPT CHECKBOXES */
+.dept-checks{display:flex;flex-wrap:wrap;gap:8px}
+.dept-cb{display:flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;padding:5px 10px;border:1px solid var(--border);border-radius:6px;transition:all .15s;user-select:none}
+.dept-cb input{display:none}
+.dept-cb.sel{background:var(--brand-light);border-color:var(--brand);color:var(--brand);font-weight:500}
+
+/* TABS */
+.tabs{display:flex;border-bottom:2px solid var(--border);margin-bottom:16px}
+.tab{padding:8px 16px;font-size:13px;font-weight:500;color:var(--text-3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
+.tab:hover{color:var(--text-2)}
+.tab.active{color:var(--brand);border-bottom-color:var(--brand)}
+
+/* NOTIFICATION PANEL */
+.notif-panel{position:fixed;top:54px;right:16px;width:320px;background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow-lg);z-index:200;display:none;max-height:70vh;overflow-y:auto}
+.notif-panel.open{display:block}
+.notif-head{padding:12px 16px;border-bottom:1px solid var(--border-2);font-weight:600;font-size:13px;display:flex;justify-content:space-between;align-items:center}
+.notif-item{padding:10px 16px;border-bottom:1px solid var(--border-2);display:flex;gap:10px;align-items:flex-start}
+.notif-item:last-child{border-bottom:none}
+.notif-ico{font-size:16px;flex-shrink:0;margin-top:1px}
+.notif-text{font-size:12px;color:var(--text-2);flex:1}
+.notif-time{font-size:10px;color:var(--text-3);margin-top:2px}
+.notif-empty{padding:24px;text-align:center;color:var(--text-3);font-size:13px}
+
+/* GCAL */
+.gcal-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.gcal-frame{width:100%;border:none;display:block}
+
+/* MISC */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
+.badge-plan{background:var(--bg);color:var(--text-3)}
+.badge-doing{background:var(--blue-light);color:var(--blue)}
+.badge-done{background:var(--brand-light);color:var(--brand)}
+.badge-pause{background:var(--yellow-light);color:var(--yellow)}
+.badge-cancel{background:var(--red-light);color:var(--red)}
+.flex{display:flex;align-items:center}
+.flex-between{display:flex;align-items:center;justify-content:space-between}
+.gap-2{gap:8px}.gap-3{gap:12px}
+.mt2{margin-top:8px}.mt3{margin-top:12px}.mt4{margin-top:16px}
+.mb3{margin-bottom:12px}.mb4{margin-bottom:16px}
+.text-3{color:var(--text-3);font-size:12px}
+.section-empty{text-align:center;padding:40px 20px;color:var(--text-3)}
+.section-empty .ei{font-size:36px;margin-bottom:10px}
+.chip{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500;margin:2px}
+.divider{height:1px;background:var(--border-2);margin:14px 0}
+/* back btn */
+.back-btn{display:flex;align-items:center;gap:6px;color:var(--text-2);font-size:13px;cursor:pointer;margin-bottom:14px;font-weight:500}
+.back-btn:hover{color:var(--brand)}
+
+/* COPY-YEAR HIGHLIGHT */
+.copy-proj-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:var(--r-sm);border:1px solid var(--border);margin-bottom:8px;cursor:pointer;transition:all .15s}
+.copy-proj-row:hover{border-color:var(--brand);background:var(--brand-light)}
+.copy-proj-row.sel{border-color:var(--brand);background:var(--brand-light)}
+
+/* ======= LOGIN SCREEN ======= */
+#loginScreen{position:fixed;inset:0;z-index:9999;background:#1A1A16;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0}
+.login-box{background:#fff;border-radius:16px;padding:36px 40px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center}
+.login-logo{font-size:32px;margin-bottom:4px}
+.login-brand{font-size:18px;font-weight:700;color:#1A1A16;margin-bottom:2px}
+.login-sys{font-size:13px;color:#6b7280;margin-bottom:28px}
+.login-btn{width:100%;padding:13px 20px;border-radius:10px;font-family:inherit;font-size:14px;font-weight:600;border:none;cursor:pointer;background:#C3F000;color:#1A1A16;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:10px}
+.login-btn:hover{background:#b0d900;transform:translateY(-1px)}
+.login-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.login-btn svg{width:20px;height:20px}
+.login-loading{font-size:12px;color:#9ca3af;margin-top:14px;min-height:18px}
+.login-error{font-size:12px;color:#dc2626;margin-top:10px;min-height:18px}
+.login-note{font-size:11px;color:#9ca3af;margin-top:20px;line-height:1.6}
+
+/* ======= USER INFO TOPBAR ======= */
+.user-chip{display:flex;align-items:center;gap:8px;padding:5px 12px;border-radius:20px;background:var(--bg);border:1px solid var(--border);font-size:12px;cursor:default}
+.user-avatar{width:24px;height:24px;border-radius:50%;object-fit:cover}
+.user-name{font-weight:500;color:var(--text-2)}
+.logout-btn{background:none;border:none;cursor:pointer;color:var(--text-3);font-size:11px;padding:2px 6px;border-radius:4px;transition:all .15s;margin-left:2px}
+.logout-btn:hover{background:var(--red-light);color:var(--red)}
+
+/* ======= WHITELIST PAGE ======= */
+.wl-table{width:100%;border-collapse:collapse;font-size:13px}
+.wl-table th{padding:9px 14px;text-align:left;font-size:11px;font-weight:600;color:var(--text-3);background:var(--bg);border-bottom:1px solid var(--border)}
+.wl-table td{padding:10px 14px;border-bottom:1px solid var(--border-2)}
+.wl-table tr:hover td{background:var(--bg)}
+.role-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600}
+.role-admin{background:#fef3c7;color:#d97706}
+.role-user{background:var(--brand-light);color:var(--brand)}
+</style>
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<!-- ========= LOGIN SCREEN ========= -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">🌿</div>
+    <div class="login-brand">得來素</div>
+    <div class="login-sys">年度行銷企劃系統</div>
+    <button class="login-btn" id="loginBtn" onclick="doGoogleLogin()">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      使用 Google 帳號登入
+    </button>
+    <div class="login-loading" id="loginLoading"></div>
+    <div class="login-error" id="loginError"></div>
+    <div class="login-note">僅限授權帳號使用<br>如需申請權限，請聯繫系統管理員</div>
+  </div>
+</div>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="logo">
+    <div class="logo-brand">🌿 得來素</div>
+    <div class="logo-sub">年度行銷企劃系統</div>
+  </div>
+  <div class="year-pick">
+    <span style="font-size:14px">📅</span>
+    <select id="yearSel" onchange="changeYear(this.value)"></select>
+  </div>
+  <div class="nav-sec">主要功能</div>
+  <div class="nav-item active" onclick="gotoPage('timeline',this)"><span class="ni">📊</span>時間軸規劃</div>
+  <div class="nav-item" onclick="gotoPage('projects',this)"><span class="ni">📁</span>活動專案</div>
+  <div class="nav-item" onclick="gotoPage('archive',this)"><span class="ni">🗄️</span>歷史專案庫</div>
+  <div class="nav-sec">工具</div>
+  <div class="nav-item" onclick="gotoPage('calendar',this)"><span class="ni">📆</span>Google 月曆</div>
+  <div class="nav-item" id="notifNav" onclick="gotoPage('notifs',this)"><span class="ni">🔔</span>待辦提醒 <span class="nav-badge" id="notifBadge" style="display:none">0</span></div>
+  <!-- 管理員專用 -->
+  <div class="nav-sec" id="adminNavSec" style="display:none">管理員</div>
+  <div class="nav-item" id="whitelistNav" style="display:none" onclick="gotoPage('whitelist',this);renderWhitelistPage()"><span class="ni">🔐</span>帳號管理</div>
+  <!-- 使用者資訊 -->
+  <div style="margin-top:auto;padding:12px;border-top:1px solid var(--border-2)">
+    <div id="sidebarUser" style="font-size:11px;color:var(--text-3)"></div>
+    <button onclick="doLogout()" style="margin-top:8px;width:100%;padding:6px;border-radius:var(--r-sm);font-family:inherit;font-size:12px;border:1px solid var(--border);background:none;cursor:pointer;color:var(--text-2)" onmouseover="this.style.background='var(--red-light)';this.style.color='var(--red)'" onmouseout="this.style.background='none';this.style.color='var(--text-2)'">登出</button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="page-title" id="pageTitle">時間軸規劃</div>
+    <div class="topbar-right" id="topbarRight">
+      <button class="btn btn-primary" onclick="openProjModal()">＋ 新增活動專案</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+  <!-- ========= TIMELINE ========= -->
+  <div class="page active" id="page-timeline">
+    <div class="tl-controls">
+      <div style="display:flex;gap:6px;align-items:center;flex:1;flex-wrap:wrap">
+        <span style="font-size:12px;font-weight:600;color:var(--text-2)">檢視：</span>
+        <button class="tl-filter-btn on" id="viewMonthBtn" onclick="setView('month')">月份</button>
+        <button class="tl-filter-btn" id="viewDayBtn" onclick="setView('day')">詳細日期</button>
+        <span style="margin-left:8px;font-size:12px;font-weight:600;color:var(--text-2)">篩選：</span>
+        <div class="tl-filter" id="tlFilter"></div>
+      </div>
+    </div>
+
+    <!-- MONTH VIEW -->
+    <div class="card" id="monthView">
+      <div class="card-header">
+        <span class="card-title" id="tlYearLabel">2025 年 年度行銷時間軸</span>
+        <span class="text-3" id="tlEventCount"></span>
+      </div>
+      <div class="card-body" style="padding:0">
+        <div class="tl-container">
+          <div class="tl-wrap">
+            <div class="tl-header">
+              <div class="tl-row-label">活動名稱</div>
+              <div class="tl-months" id="tlMonthsHeader"></div>
+            </div>
+            <div class="tl-body" id="tlBody"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY VIEW -->
+    <div class="card" id="dayView" style="display:none">
+      <div class="card-header">
+        <span class="card-title">日期時間軸 <span id="dayViewLabel" style="font-size:12px;color:var(--text-3)"></span></span>
+        <div class="flex gap-2">
+          <button class="btn btn-outline btn-sm" onclick="shiftDayView(-30)">◀ 上個月</button>
+          <button class="btn btn-outline btn-sm" onclick="shiftDayView(30)">下個月 ▶</button>
+        </div>
+      </div>
+      <div class="card-body" style="padding:0">
+        <div class="tl-container">
+          <div class="tl-wrap" id="dayViewWrap" style="min-width:unset">
+            <!-- built dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========= PROJECTS ========= -->
+  <div class="page" id="page-projects">
+    <div id="projectsListView">
+      <div class="flex-between mb4">
+        <div class="flex gap-2">
+          <select class="fc fc-sm" style="width:120px" id="projFilterStatus" onchange="renderProjects()">
+            <option value="">全部狀態</option>
+            <option value="plan">規劃中</option>
+            <option value="doing">進行中</option>
+            <option value="done">已完成</option>
+            <option value="pause">暫停</option>
+          </select>
+          <select class="fc fc-sm" style="width:120px" id="projFilterCat" onchange="renderProjects()">
+            <option value="">全部類別</option>
+            <option value="node">節慶活動</option>
+            <option value="promo">促銷優惠</option>
+            <option value="social">社群行銷</option>
+            <option value="content">內容行銷</option>
+            <option value="ads">廣告投放</option>
+            <option value="other">其他</option>
+          </select>
+        </div>
+      </div>
+      <div class="proj-grid" id="projGrid"></div>
+      <div id="projEmpty" class="section-empty" style="display:none">
+        <div class="ei">📂</div>
+        <p>尚無活動專案</p>
+      </div>
+    </div>
+
+    <div id="projectDetailView" style="display:none">
+      <div class="back-btn" onclick="showProjList()">← 返回列表</div>
+      <div id="projDetailContent"></div>
+    </div>
+  </div>
+
+  <!-- ========= ARCHIVE ========= -->
+  <div class="page" id="page-archive">
+    <div class="mb4">
+      <p class="text-3" style="margin-bottom:12px">💡 歷史專案庫收錄所有年份的已完成專案，可直接複製到當年使用。</p>
+      <div class="flex gap-2" style="flex-wrap:wrap">
+        <select class="fc fc-sm" style="width:120px" id="archiveFilterYear" onchange="renderArchive()">
+          <option value="">所有年份</option>
+        </select>
+        <select class="fc fc-sm" style="width:120px" id="archiveFilterCat" onchange="renderArchive()">
+          <option value="">全部類別</option>
+          <option value="node">節慶活動</option>
+          <option value="promo">促銷優惠</option>
+          <option value="social">社群行銷</option>
+          <option value="content">內容行銷</option>
+          <option value="ads">廣告投放</option>
+          <option value="other">其他</option>
+        </select>
+        <input class="fc fc-sm" style="width:160px" id="archiveSearch" oninput="renderArchive()" placeholder="🔍 搜尋專案名稱">
+      </div>
+    </div>
+    <div class="proj-grid" id="archiveGrid"></div>
+    <div id="archiveEmpty" class="section-empty" style="display:none">
+      <div class="ei">🗄️</div>
+      <p>尚無歷史專案</p>
+    </div>
+  </div>
+
+  <!-- ========= GOOGLE CALENDAR ========= -->
+  <div class="page" id="page-calendar">
+    <div class="flex-between mb4" style="flex-wrap:wrap;gap:10px">
+      <p class="text-3" style="margin:0">自訂年度節慶行銷日曆，節慶可跨年共用，點「加入規劃」可直接在指定年份建立活動專案。</p>
+      <button class="btn btn-primary" onclick="openHolidayModal()">＋ 新增節慶 / 節點</button>
+    </div>
+
+    <!-- controls -->
+    <div class="flex gap-2 mb4" style="flex-wrap:wrap;align-items:center">
+      <div style="display:flex;align-items:center;gap:6px;background:var(--brand-light);padding:6px 12px;border-radius:var(--r-sm)">
+        <span style="font-size:13px">📅</span>
+        <span style="font-size:12px;font-weight:600;color:var(--brand)">加入規劃年份：</span>
+        <select class="fc fc-sm" id="calPlanYear" onchange="renderHolidays()" style="background:transparent;border:none;font-weight:700;color:var(--brand);width:80px;padding:0"></select>
+      </div>
+      <div style="width:1px;height:24px;background:var(--border)"></div>
+      <select class="fc fc-sm" style="width:110px" id="holidayMonthSel" onchange="renderHolidays()">
+        <option value="0">全部月份</option>
+        <option value="1">1 月</option><option value="2">2 月</option><option value="3">3 月</option>
+        <option value="4">4 月</option><option value="5">5 月</option><option value="6">6 月</option>
+        <option value="7">7 月</option><option value="8">8 月</option><option value="9">9 月</option>
+        <option value="10">10 月</option><option value="11">11 月</option><option value="12">12 月</option>
+      </select>
+      <select class="fc fc-sm" style="width:120px" id="holidayTypeSel" onchange="renderHolidays()">
+        <option value="">全部類型</option>
+        <option value="holiday">國定假日</option>
+        <option value="event">行銷節點</option>
+        <option value="custom">自訂</option>
+      </select>
+      <input class="fc fc-sm" id="holidaySearch" style="width:160px" placeholder="🔍 搜尋" oninput="renderHolidays()">
+    </div>
+
+    <div class="card">
+      <div class="card-body" style="padding:0">
+        <div id="holidayGrid"></div>
+        <div id="holidayEmpty" class="section-empty" style="display:none;padding:40px">
+          <div class="ei">🗓️</div>
+          <p>尚無節慶資料，點右上角「＋ 新增節慶」開始建立</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========= NOTIFICATIONS ========= -->
+  <div class="page" id="page-notifs">
+    <div class="card">
+      <div class="card-header"><span class="card-title">🔔 待辦提醒</span></div>
+      <div id="notifListFull" class="card-body" style="padding:0 0"></div>
+    </div>
+  </div>
+
+  <!-- ========= WHITELIST MANAGEMENT ========= -->
+  <div class="page" id="page-whitelist">
+    <div class="card mb4">
+      <div class="card-header">
+        <span class="card-title">🔐 帳號權限管理</span>
+        <button class="btn btn-primary btn-sm" onclick="openAddUserModal()">＋ 新增授權帳號</button>
+      </div>
+      <div class="card-body" style="padding:0">
+        <table class="wl-table">
+          <thead><tr><th>Email</th><th>角色</th><th>加入時間</th><th>操作</th></tr></thead>
+          <tbody id="wlTableBody"></tbody>
+        </table>
+        <div id="wlEmpty" style="text-align:center;padding:32px;color:var(--text-3);font-size:13px;display:none">尚無授權帳號</div>
+      </div>
+    </div>
+    <div class="card" style="background:var(--blue-light);border-color:#bfdbfe">
+      <div class="card-body" style="font-size:12px;color:#1e40af;line-height:1.8">
+        <strong>說明：</strong><br>
+        • 僅白名單內的帳號可登入本系統<br>
+        • 管理員可新增／移除其他使用者的授權<br>
+        • 首位登入者自動成為管理員<br>
+        • 管理員帳號無法被刪除
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ========== ADD USER MODAL ========== -->
+<div class="mo" id="addUserModal">
+  <div class="mo-box" style="max-width:400px">
+    <div class="mo-head">
+      <div class="mo-title">新增授權帳號</div>
+      <button class="mo-close" onclick="closeMo('addUserModal')">✕</button>
+    </div>
+    <div class="mo-body">
+      <div class="fg">
+        <label class="fl">Google 帳號 Email *</label>
+        <input class="fc" id="newUserEmail" type="email" placeholder="example@gmail.com">
+      </div>
+      <div class="fg">
+        <label class="fl">角色</label>
+        <select class="fc" id="newUserRole">
+          <option value="user">一般使用者</option>
+          <option value="admin">管理員</option>
+        </select>
+      </div>
+      <div id="addUserError" style="font-size:12px;color:var(--red);min-height:16px"></div>
+    </div>
+    <div class="mo-foot">
+      <button class="btn btn-outline" onclick="closeMo('addUserModal')">取消</button>
+      <button class="btn btn-primary" onclick="addWhitelistUser()">確認新增</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PROJECT MODAL ========== -->
+<div class="mo" id="projModal">
+  <div class="mo-box wide">
+    <div class="mo-head">
+      <div class="mo-title" id="projModalTitle">新增活動專案</div>
+      <button class="mo-close" onclick="closeMo('projModal')">✕</button>
+    </div>
+    <div class="mo-body">
+      <div class="tabs" id="projModalTabs" style="flex-wrap:wrap">
+        <div class="tab active" onclick="switchProjTab(0,this)">一、名稱</div>
+        <div class="tab" onclick="switchProjTab(1,this)">二、辦法</div>
+        <div class="tab" onclick="switchProjTab(2,this)">三、定價</div>
+        <div class="tab" onclick="switchProjTab(3,this)">四、目標</div>
+        <div class="tab" onclick="switchProjTab(4,this)">五、時程</div>
+        <div class="tab" onclick="switchProjTab(5,this)">六、文案</div>
+        <div class="tab" onclick="switchProjTab(6,this)">七、設計</div>
+        <div class="tab" onclick="switchProjTab(7,this)">八、協辦</div>
+      </div>
+
+      <!-- TAB 0: 一、活動名稱 -->
+      <div id="ptab0">
+        <div class="sec-label">一、活動名稱</div>
+        <div class="fr">
+          <div class="fg"><label class="fl">活動名稱 *</label><input class="fc" id="pName" placeholder="例：2025 端午節活動"></div>
+          <div class="fg">
+            <label class="fl">類別</label>
+            <select class="fc" id="pCat">
+              <option value="node">節慶活動</option>
+              <option value="promo">促銷優惠</option>
+              <option value="social">社群行銷</option>
+              <option value="content">內容行銷</option>
+              <option value="ads">廣告投放</option>
+              <option value="other">其他</option>
+            </select>
+          </div>
+        </div>
+        <div style="height:1px;background:var(--border-2);margin:14px 0"></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+          <div class="fg"><label class="fl">狀態</label>
+            <select class="fc" id="pStatus">
+              <option value="plan">規劃中</option>
+              <option value="doing">進行中</option>
+              <option value="done">已完成</option>
+              <option value="pause">暫停</option>
+            </select>
+          </div>
+          <div class="fg"><label class="fl">進度 (%)</label><input class="fc" id="pProgress" type="number" min="0" max="100" value="0"></div>
+          <div class="fg"><label class="fl">規劃預算 (NT$)</label><input class="fc" id="pBudget" type="number" placeholder="0"></div>
+          <div class="fg"><label class="fl">時間軸顯示色</label><input class="fc" id="pColor" type="color" value="#2d6a4f"></div>
+        </div>
+      </div>
+
+      <!-- TAB 1: 二、活動辦法 -->
+      <div id="ptab1" style="display:none">
+        <div class="sec-label">二、活動辦法</div>
+        <div class="fg">
+          <textarea class="fc" id="pMethod" rows="8" placeholder="說明活動規則、參與方式、適用對象、限制條件等。&#10;例：本次活動採三階段價格：直播價、早鳥價、正常售價。&#10;直播價期間：4/14~4/16 晚上8點兩場直播。&#10;早鳥優惠期間：4/17~4/30。"></textarea>
+        </div>
+      </div>
+
+      <!-- TAB 2: 三、定價策略 -->
+      <div id="ptab2" style="display:none">
+        <div class="sec-label">三、定價策略</div>
+        <div class="fg">
+          <textarea class="fc" id="pPricing" rows="8" placeholder="各階段定價說明。&#10;例：&#10;直播價 (4/14~4/16)：20顆裝 920元&#10;早鳥價 (4/17~4/30)：20顆裝 950元、10顆袋裝 550元&#10;團購優惠：兩串 1880元、四串 3720元&#10;正常售價 (5/1起)：1050元"></textarea>
+        </div>
+      </div>
+
+      <!-- TAB 3: 四、活動目標與預期效益 -->
+      <div id="ptab3" style="display:none">
+        <div class="sec-label">四、活動目標與預期效益</div>
+        <div class="fg">
+          <textarea class="fc" id="pGoal" rows="8" placeholder="例：&#10;1. 素粽總銷售目標數量：8 萬顆&#10;2. 提高品牌知名度，帶動加盟門市銷售&#10;3. 擴展團購市場，提高顧客黏著度"></textarea>
+        </div>
+      </div>
+
+      <!-- TAB 4: 五、時程安排 -->
+      <div id="ptab4" style="display:none">
+        <div class="sec-label">五、時程安排</div>
+        <div class="fr">
+          <div class="fg"><label class="fl">活動開始日 *</label><input class="fc" id="pStart" type="date"></div>
+          <div class="fg"><label class="fl">活動結束日 *</label><input class="fc" id="pEnd" type="date"></div>
+        </div>
+        <div class="fg">
+          <label class="fl">各階段時程說明</label>
+          <textarea class="fc" id="pSchedule" rows="3" placeholder="例：&#10;4月初：拍攝產品照片、文宣設計&#10;4/14、4/16：直播銷售推廣&#10;4/17~4/30：早鳥價促銷&#10;5/1後：正常價格銷售"></textarea>
+        </div>
+        <div class="fg">
+          <div class="flex-between mb3">
+            <label class="fl" style="margin:0">詳細任務清單（可設截止日、負責單位，時間到會發通知）</label>
+            <button class="btn btn-brand2 btn-sm" onclick="addTaskRow()">＋ 新增任務</button>
+          </div>
+          <div id="taskList"></div>
+        </div>
+      </div>
+
+      <!-- TAB 5: 六、活動文案 -->
+      <div id="ptab5" style="display:none">
+        <div class="sec-label">六、活動文案</div>
+        <div class="fg">
+          <label class="fl">文案內容</label>
+          <textarea class="fc" id="pCopyDir" rows="6" placeholder="填寫活動文案，可直接複製用於廣告投放。&#10;例：🔥 一年熱銷30萬顆！端午必搶，錯過等明年！"></textarea>
+        </div>
+        <div class="fg">
+          <label class="fl">活動連結</label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input class="fc" id="pLink" placeholder="https://...（填入後可一鍵複製文案+連結）" style="flex:1">
+            <button class="btn btn-brand2 btn-sm" onclick="copyAdCopy()">📋 複製文案+連結</button>
+          </div>
+          <div style="font-size:11px;color:var(--text-3);margin-top:4px">💡 點「複製」會同時複製文案內容與連結，方便直接貼到廣告後台</div>
+        </div>
+        <div class="fg">
+          <label class="fl">備註</label>
+          <textarea class="fc" id="pNote" rows="2" placeholder="其他補充說明"></textarea>
+        </div>
+      </div>
+
+      <!-- TAB 6: 七、設計需求 -->
+      <div id="ptab6" style="display:none">
+        <div class="sec-label">七、設計需求</div>
+        <div class="fg">
+          <div class="flex-between mb3">
+            <label class="fl" style="margin:0">常用規格快捷鍵 <span style="font-size:10px;color:var(--text-3)">（點擊插入，可自訂新增）</span></label>
+            <button class="btn btn-brand2 btn-xs" onclick="openAddShortcut()">＋ 新增快捷</button>
+          </div>
+          <div id="designShortcuts" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div>
+        </div>
+        <div class="fg">
+          <label class="fl">設計需求內容</label>
+          <textarea class="fc" id="pDesign" rows="7" placeholder="點擊上方快捷鍵可快速插入常用規格，或直接手動填寫。&#10;例：&#10;• FB 廣告圖 1040×1040&#10;• IG 限時動態 1080×1920&#10;• 網站 Banner 1920×600&#10;• Line@ Banner 1040×400"></textarea>
+        </div>
+      </div>
+
+      <!-- TAB 7: 八、協辦單位 -->
+      <div id="ptab7" style="display:none">
+        <div class="sec-label">八、協辦單位與注意事項</div>
+        <div class="fg">
+          <div class="flex-between mb3">
+            <label class="fl" style="margin:0">協辦單位（勾選參與此活動的單位）</label>
+            <button class="btn btn-outline btn-xs" onclick="openManageDepts()">⚙️ 管理部門</button>
+          </div>
+          <div class="dept-checks" id="deptChecks"></div>
+        </div>
+        <div id="deptNotesArea" style="margin-top:14px"></div>
+      </div>
+    </div>
+    <div class="mo-foot">
+      <button class="btn btn-outline" onclick="closeMo('projModal')">取消</button>
+      <button class="btn btn-primary" onclick="saveProject()">儲存</button>
+    </div>
+  </div>
+</div>
+
+<!-- COPY PROJECT MODAL -->
+<div class="mo" id="copyModal">
+  <div class="mo-box">
+    <div class="mo-head">
+      <div class="mo-title">複製專案到 <span id="copyTargetYear"></span> 年</div>
+      <button class="mo-close" onclick="closeMo('copyModal')">✕</button>
+    </div>
+    <div class="mo-body">
+      <p class="text-3 mb3">複製後可在當年專案列表中修改細節。</p>
+      <div id="copyProjList"></div>
+      <div id="copyEmpty" class="section-empty" style="display:none"><p>沒有可複製的歷史專案</p></div>
+    </div>
+    <div class="mo-foot">
+      <button class="btn btn-outline" onclick="closeMo('copyModal')">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD TASK MODAL -->
+<div class="mo" id="taskModal">
+  <div class="mo-box">
+    <div class="mo-head">
+      <div class="mo-title" id="taskModalTitle">新增任務</div>
+      <button class="mo-close" onclick="closeMo('taskModal')">✕</button>
+    </div>
+    <div class="mo-body">
+      <div class="fg"><label class="fl">任務名稱 *</label><input class="fc" id="tmName" placeholder="例：拍攝產品照片"></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">截止日期</label><input class="fc" id="tmDue" type="date"></div>
+        <div class="fg"><label class="fl">負責單位</label>
+          <select class="fc" id="tmDept">
+            <option value="">—</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label class="fl">備註</label><input class="fc" id="tmNote" placeholder="補充說明"></div>
+    </div>
+    <div class="mo-foot">
+      <button class="btn btn-outline" onclick="closeMo('taskModal')">取消</button>
+      <button class="btn btn-primary" onclick="saveTaskFromModal()">新增</button>
+    </div>
+  </div>
+</div>
+
+<!-- HOLIDAY MODAL -->
+<div class="mo" id="holidayModal">
+  <div class="mo-box" style="max-width:460px">
+    <div class="mo-head">
+      <div class="mo-title" id="holidayModalTitle">新增節慶 / 行銷節點</div>
+      <button class="mo-close" onclick="closeMo('holidayModal')">✕</button>
+    </div>
+    <div class="mo-body">
+      <div class="fg"><label class="fl">名稱 *</label><input class="fc" id="hlName" placeholder="例：母親節、雙11購物節"></div>
+      <div class="fr3">
+        <div class="fg"><label class="fl">年份</label>
+          <select class="fc" id="hlYear">
+            <option value="0">每年通用</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">月份 *</label>
+          <select class="fc" id="hlMonth">
+            <option value="1">1 月</option><option value="2">2 月</option><option value="3">3 月</option>
+            <option value="4">4 月</option><option value="5">5 月</option><option value="6">6 月</option>
+            <option value="7">7 月</option><option value="8">8 月</option><option value="9">9 月</option>
+            <option value="10">10 月</option><option value="11">11 月</option><option value="12">12 月</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">日期 *</label><input class="fc" id="hlDay" type="number" min="1" max="31" placeholder="日"></div>
+      </div>
+      <div style="font-size:11px;color:var(--text-3);margin:-8px 0 12px">💡 選「每年通用」表示此節慶每年都有；填特定年份則只顯示在該年（適合農曆節日日期每年不同的情況）</div>
+      <div class="fg"><label class="fl">類型</label>
+        <select class="fc" id="hlType">
+          <option value="holiday">🔴 國定假日</option>
+          <option value="event">🔵 行銷節點</option>
+          <option value="custom">🟢 自訂</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">行銷建議（選填）</label>
+        <input class="fc" id="hlMkt" placeholder="例：母親節禮盒、感恩套餐推廣"></div>
+    </div>
+    <div class="mo-foot">
+      <button class="btn btn-outline" onclick="closeMo('holidayModal')">取消</button>
+      <button class="btn btn-primary" onclick="saveHoliday()">儲存</button>
+    </div>
+  </div>
+</div>
+
+<!-- MANAGE DEPTS MODAL -->
+<div class="mo" id="manageDeptsMo">
+  <div class="mo-box" style="max-width:440px">
+    <div class="mo-head">
+      <div class="mo-title">⚙️ 管理部門 / 協辦單位</div>
+      <button class="mo-close" onclick="closeMo('manageDeptsMo')">✕</button>
+    </div>
+    <div class="mo-body">
+      <div id="deptsManagerList" style="margin-bottom:16px"></div>
+      <div style="border-top:1px solid var(--border-2);padding-top:14px">
+        <div style="font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:8px">新增部門</div>
+        <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center">
+          <input class="fc fc-sm" id="newDeptName" placeholder="部門名稱，例：電商部">
+          <input type="color" id="newDeptColor" value="#6366f1" style="width:34px;height:34px;border:1px solid var(--border);border-radius:6px;padding:2px;cursor:pointer">
+          <button class="btn btn-primary btn-sm" onclick="addNewDept()">新增</button>
+        </div>
+      </div>
+    </div>
+    <div class="mo-foot">
+      <button class="btn btn-outline btn-sm" onclick="resetDeptsToDefault()">還原預設</button>
+      <button class="btn btn-primary" onclick="closeMo('manageDeptsMo')">完成</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD DESIGN SHORTCUT MODAL -->
+<div class="mo" id="shortcutModal">
+  <div class="mo-box" style="max-width:400px">
+    <div class="mo-head">
+      <div class="mo-title">新增設計規格快捷鍵</div>
+      <button class="mo-close" onclick="closeMo('shortcutModal')">✕</button>
+    </div>
+    <div class="mo-body">
+      <div class="fg"><label class="fl">按鈕名稱 *</label><input class="fc" id="scLabel" placeholder="例：FB 廣告圖"></div>
+      <div class="fg"><label class="fl">規格說明 *</label><input class="fc" id="scSpec" placeholder="例：FB 廣告圖 1040×1040"></div>
+      <div style="font-size:11px;color:var(--text-3);margin-top:4px">點擊快捷鍵時，會將規格說明自動插入設計需求文字框。</div>
+    </div>
+    <div class="mo-foot">
+      <button class="btn btn-outline" onclick="closeMo('shortcutModal')">取消</button>
+      <button class="btn btn-primary" onclick="saveShortcut()">新增</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM -->
+<div class="mo" id="confirmMo">
+  <div class="mo-box" style="max-width:360px">
+    <div class="mo-head"><div class="mo-title">確認操作</div><button class="mo-close" onclick="closeMo('confirmMo')">✕</button></div>
+    <div class="mo-body"><p id="confirmMsg" style="color:var(--text-2)"></p></div>
+    <div class="mo-foot">
+      <button class="btn btn-outline" onclick="closeMo('confirmMo')">取消</button>
+      <button class="btn btn-danger" id="confirmOkBtn">確認</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+const DEFAULT_DEPTS = [
+  { key:'marketing', label:'行銷部', color:'#2563eb' },
+  { key:'product',   label:'生產部', color:'#16a34a' },
+  { key:'finance',   label:'財務部', color:'#d97706' },
+  { key:'ops',       label:'營運部', color:'#7c3aed' },
+  { key:'sales',     label:'業務部', color:'#ea580c' },
+  { key:'design',    label:'設計',   color:'#0e7490' },
+];
+// ============================================================
+// IN-MEMORY CACHE（Firebase 載入前先用預設值，載入後自動同步）
+// ============================================================
+let _deptsCache = null;
+function loadDepts() { return _deptsCache || DEFAULT_DEPTS; }
+function saveDepts(list) {
+  _deptsCache = list;
+  Object.keys(DEPT_LABELS).forEach(k => delete DEPT_LABELS[k]);
+  list.forEach(d => DEPT_LABELS[d.key] = d.label);
+  syncToFirestore('depts', list);
+}
+let DEPTS = loadDepts();
+const CATS = {
+  node:    { label:'節慶活動', color:'#e76f51' },
+  promo:   { label:'促銷優惠', color:'#2d6a4f' },
+  social:  { label:'社群行銷', color:'#2563eb' },
+  content: { label:'內容行銷', color:'#16a34a' },
+  ads:     { label:'廣告投放', color:'#d97706' },
+  other:   { label:'其他',    color:'#9ca3af' },
+};
+const STATUSES = {
+  plan:  { label:'規劃中', cls:'badge-plan' },
+  doing: { label:'進行中', cls:'badge-doing' },
+  done:  { label:'已完成', cls:'badge-done' },
+  pause: { label:'暫停',   cls:'badge-pause' },
+};
+const MONTH_NAMES = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+const DEPT_LABELS = {};
+DEPTS.forEach(d => DEPT_LABELS[d.key] = d.label);
+
+// ============================================================
+// STATE
+// ============================================================
+let curYear = new Date().getFullYear();
+let curView = 'month';
+let dayViewStart = new Date(curYear, new Date().getMonth(), 1);
+let activeFilters = [];
+let editingProjId = null;
+let editingTaskIdx = null;
+let tempTasks = [];
+let viewingProjId = null;
+
+// ============================================================
+// STORAGE（Firestore 快取）
+// ============================================================
+let _allCache = null;
+function loadAll() { return _allCache || []; }
+function saveAll(data) {
+  _allCache = data;
+  syncToFirestore('projects', data);
+}
+function loadYear(y) { return loadAll().filter(p => p.year === y); }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function fmt(n) { return Number(n||0).toLocaleString('zh-TW'); }
+
+// ============================================================
+// YEAR
+// ============================================================
+function initYear() {
+  const sel = document.getElementById('yearSel');
+  const cur = new Date().getFullYear();
+  for (let y = cur - 3; y <= cur + 3; y++) {
+    const o = document.createElement('option');
+    o.value = y; o.textContent = y + ' 年';
+    if (y === curYear) o.selected = true;
+    sel.appendChild(o);
+  }
+}
+function changeYear(y) { curYear = parseInt(y); renderCurrentPage(); }
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+let curPage = 'timeline';
+function gotoPage(page, el) {
+  curPage = page;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const titles = { timeline:'時間軸規劃', projects:'活動專案', archive:'歷史專案庫', calendar:'Google 月曆', notifs:'待辦提醒', whitelist:'帳號權限管理' };
+  document.getElementById('pageTitle').textContent = titles[page] || page;
+  // topbar buttons
+  const tb = document.getElementById('topbarRight');
+  if (page === 'timeline') tb.innerHTML = `<button class="btn btn-primary" onclick="openProjModal()">＋ 新增活動專案</button>`;
+  else if (page === 'projects') tb.innerHTML = `<button class="btn btn-primary" onclick="openProjModal()">＋ 新增活動專案</button>`;
+  else if (page === 'archive') tb.innerHTML = `<button class="btn btn-brand2" onclick="openCopyModal()">📋 複製到今年</button>`;
+  else if (page === 'calendar') tb.innerHTML = `<button class="btn btn-primary" onclick="openHolidayModal()">＋ 新增節慶 / 節點</button>`;
+  else tb.innerHTML = '';
+  renderCurrentPage();
+}
+function renderCurrentPage() {
+  if (curPage === 'timeline') renderTimeline();
+  else if (curPage === 'projects') { showProjList(); renderProjects(); }
+  else if (curPage === 'archive') { renderArchive(); updateArchiveFilter(); }
+  else if (curPage === 'calendar') { renderHolidays(); }
+  else if (curPage === 'notifs') renderNotifPage();
+  updateNotifBadge();
+}
+
+// ============================================================
+// TIMELINE - MONTH VIEW
+// ============================================================
+function setView(v) {
+  curView = v;
+  document.getElementById('monthView').style.display = v === 'month' ? '' : 'none';
+  document.getElementById('dayView').style.display   = v === 'day'   ? '' : 'none';
+  document.getElementById('viewMonthBtn').className = 'tl-filter-btn' + (v==='month'?' on':'');
+  document.getElementById('viewDayBtn').className   = 'tl-filter-btn' + (v==='day'  ?' on':'');
+  if (v === 'month') renderMonthTimeline();
+  else renderDayTimeline();
+}
+
+function renderTimeline() {
+  buildCatFilter();
+  document.getElementById('tlYearLabel').textContent = curYear + ' 年 年度行銷時間軸';
+  if (curView === 'month') renderMonthTimeline();
+  else renderDayTimeline();
+}
+
+function buildCatFilter() {
+  const fc = document.getElementById('tlFilter');
+  fc.innerHTML = Object.entries(CATS).map(([k,v]) =>
+    `<button class="tl-filter-btn ${activeFilters.length===0||activeFilters.includes(k)?'on':''}" onclick="toggleFilter('${k}',this)">${v.label}</button>`
+  ).join('');
+}
+function toggleFilter(cat, btn) {
+  if (activeFilters.includes(cat)) activeFilters = activeFilters.filter(c=>c!==cat);
+  else activeFilters.push(cat);
+  buildCatFilter();
+  if (curView === 'month') renderMonthTimeline();
+  else renderDayTimeline();
+}
+
+function renderMonthTimeline() {
+  const projs = loadYear(curYear).filter(p => p.status !== 'cancel');
+  const filtered = activeFilters.length ? projs.filter(p => activeFilters.includes(p.cat)) : projs;
+  document.getElementById('tlEventCount').textContent = filtered.length + ' 個活動';
+
+  // Month header
+  const hdr = document.getElementById('tlMonthsHeader');
+  hdr.innerHTML = MONTH_NAMES.map(m => `<div class="tl-month">${m}</div>`).join('');
+
+  // Today line position
+  const todayMonth = new Date().getFullYear() === curYear ? new Date().getMonth() : -1; // 0-based
+  const todayDay = new Date().getDate();
+
+  const body = document.getElementById('tlBody');
+  if (!filtered.length) {
+    body.innerHTML = '<div class="section-empty" style="padding:40px"><p>尚無活動，請點擊右上角新增</p></div>';
+    return;
+  }
+
+  body.innerHTML = filtered.map((p, ri) => {
+    const startDate = new Date(p.start);
+    const endDate   = new Date(p.end);
+    const startM = startDate.getMonth(); // 0-based
+    const endM   = endDate.getMonth();
+    const cat = CATS[p.cat] || CATS.other;
+    const st = STATUSES[p.status] || STATUSES.plan;
+    const deptStr = (p.depts||[]).map(d=>DEPT_LABELS[d]||d).join('、') || '—';
+
+    // Bar calculation: left% and width%
+    const totalDays = 365;
+    const startDOY = dayOfYear(startDate);
+    const endDOY   = dayOfYear(endDate);
+    const leftPct  = ((startDOY-1) / totalDays * 100).toFixed(2);
+    const widthPct = ((endDOY - startDOY + 1) / totalDays * 100).toFixed(2);
+
+    // Cells
+    const cells = MONTH_NAMES.map((_, mi) => {
+      const isTodayCol = mi === todayMonth;
+      return `<div class="tl-cell ${isTodayCol?'today-col':''}"></div>`;
+    }).join('');
+
+    // Today line in grid
+    let todayLineHTML = '';
+    if (todayMonth >= 0) {
+      const daysInMonth = new Date(curYear, todayMonth+1, 0).getDate();
+      const todayPct = ((dayOfYear(new Date(curYear, todayMonth, todayDay))-1)/totalDays*100).toFixed(2);
+      todayLineHTML = `<div class="today-line" style="left:${todayPct}%"></div>`;
+    }
+
+    return `<div class="tl-row" onclick="openProjDetailFromTl('${p.id}')">
+      <div class="tl-row-info">
+        <div>
+          <div class="tl-row-name" title="${p.name}">${p.name}</div>
+          <div style="font-size:10px;color:var(--text-3);margin-top:2px">${deptStr}</div>
+        </div>
+      </div>
+      <div class="tl-grid">
+        ${cells}
+        ${todayLineHTML}
+        <div class="tl-bar-wrap" style="left:${leftPct}%;width:${Math.max(parseFloat(widthPct),0.5)}%">
+          <div class="tl-bar" style="background:${p.color||cat.color}" title="${p.name}">
+            ${p.name}
+            <div class="bar-tip">${p.name}<br>${p.start} → ${p.end}<br>${cat.label} · <span class="${st.cls}">${st.label}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// TIMELINE - DAY VIEW
+// ============================================================
+function shiftDayView(days) {
+  dayViewStart = new Date(dayViewStart.getTime() + days * 86400000);
+  renderDayTimeline();
+}
+
+function renderDayTimeline() {
+  const projs = loadYear(curYear).filter(p => p.status !== 'cancel');
+  const filtered = activeFilters.length ? projs.filter(p => activeFilters.includes(p.cat)) : projs;
+
+  // 30-day window
+  const winStart = new Date(dayViewStart);
+  winStart.setDate(1); // start of month
+  const winEnd = new Date(winStart.getFullYear(), winStart.getMonth()+1, 0);
+  const days = [];
+  let d = new Date(winStart);
+  while (d <= winEnd) { days.push(new Date(d)); d.setDate(d.getDate()+1); }
+
+  document.getElementById('dayViewLabel').textContent = winStart.getFullYear() + '年' + (winStart.getMonth()+1) + '月';
+
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  // header
+  const dayColW = Math.max(28, Math.floor(900/days.length));
+  const hdr = `<div class="day-header">
+    <div class="day-label">活動名稱</div>
+    <div class="day-cells" style="overflow-x:hidden">
+      ${days.map(d => {
+        const isToday = d.toDateString() === today.toDateString();
+        const isWeekend = d.getDay()===0||d.getDay()===6;
+        return `<div class="day-col ${isWeekend?'weekend':''} ${isToday?'is-today':''}" style="min-width:${dayColW}px;flex:none">
+          <div>${d.getDate()}</div><div>${['日','一','二','三','四','五','六'][d.getDay()]}</div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+
+  const relevantProjs = filtered.filter(p => {
+    const ps = new Date(p.start); const pe = new Date(p.end);
+    return ps <= winEnd && pe >= winStart;
+  });
+
+  const rows = relevantProjs.map(p => {
+    const ps = new Date(p.start); const pe = new Date(p.end);
+    const cat = CATS[p.cat] || CATS.other;
+    // calculate bar
+    const startClip = ps < winStart ? winStart : ps;
+    const endClip   = pe > winEnd   ? winEnd   : pe;
+    const startOff = Math.round((startClip - winStart)/86400000);
+    const span     = Math.round((endClip - startClip)/86400000) + 1;
+    const leftPx   = startOff * dayColW;
+    const widthPx  = span * dayColW - 2;
+    return `<div class="day-row" onclick="openProjDetailFromTl('${p.id}')">
+      <div class="day-row-info" title="${p.name}" style="font-size:11px">
+        <div style="width:6px;height:22px;border-radius:3px;background:${p.color||cat.color};flex-shrink:0"></div>
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.name}</span>
+      </div>
+      <div class="day-grid" style="position:relative;overflow:hidden">
+        ${days.map((_, i) => {
+          const dd = days[i]; const isWk = dd.getDay()===0||dd.getDay()===6;
+          return `<div class="day-cell ${isWk?'weekend':''}" style="min-width:${dayColW}px;flex:none"></div>`;
+        }).join('')}
+        <div class="day-bar" style="left:${leftPx}px;width:${widthPx}px;background:${p.color||cat.color};opacity:.85"></div>
+      </div>
+    </div>`;
+  }).join('') || '<div class="section-empty"><p>本月無活動</p></div>';
+
+  document.getElementById('dayViewWrap').innerHTML = hdr + rows;
+}
+
+function dayOfYear(d) {
+  const start = new Date(d.getFullYear(), 0, 0);
+  return Math.floor((d - start) / 86400000);
+}
+
+// ============================================================
+// PROJECT MODAL
+// ============================================================
+function buildDeptChecks(selected = [], deptNotes = {}) {
+  const el = document.getElementById('deptChecks');
+  el.innerHTML = DEPTS.map(d => {
+    const isSel = selected.includes(d.key);
+    return `<label class="dept-cb ${isSel?'sel':''}" id="deptlabel_${d.key}">
+      <input type="checkbox" ${isSel?'checked':''} onchange="toggleDeptCb(this,'${d.key}')">
+      <span style="width:8px;height:8px;border-radius:50%;background:${d.color};display:inline-block"></span>
+      ${d.label}
+    </label>`;
+  }).join('');
+  window._deptNotes = Object.assign({}, deptNotes);
+  buildDeptNotesArea();
+}
+
+function toggleDeptCb(checkbox, key) {
+  saveDeptNotesTemp();
+  const label = document.getElementById('deptlabel_' + key);
+  if (label) label.classList.toggle('sel', checkbox.checked);
+  buildDeptNotesArea();
+}
+
+function saveDeptNotesTemp() {
+  // 把目前畫面上所有 textarea 的值存回 _deptNotes
+  DEPTS.forEach(d => {
+    const ta = document.getElementById('deptNote_' + d.key);
+    if (ta) {
+      if (!window._deptNotes) window._deptNotes = {};
+      window._deptNotes[d.key] = ta.value;
+    }
+  });
+}
+
+function buildDeptNotesArea() {
+  const selected = getSelectedDeptsFromChecks();
+  const area = document.getElementById('deptNotesArea');
+  if (!area) return;
+  if (!selected.length) {
+    area.innerHTML = '<div class="text-3" style="padding:8px 0">請先勾選上方協辦單位，即可填寫各單位注意事項。</div>';
+    return;
+  }
+  area.innerHTML = selected.map(dk => {
+    const dep = DEPTS.find(d => d.key === dk);
+    const val = (window._deptNotes || {})[dk] || '';
+    return `<div class="fg" style="margin-bottom:12px">
+      <label class="fl" style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+        <span style="width:10px;height:10px;border-radius:50%;background:${dep.color};display:inline-block;flex-shrink:0"></span>
+        <span style="font-weight:600;color:var(--text)">${dep.label}</span>
+        <span style="color:var(--text-3);font-weight:400">— 注意事項 / 責任範圍</span>
+      </label>
+      <textarea class="fc" id="deptNote_${dk}" rows="3"
+        placeholder="例：負責設計宣傳素材（Banner、社群圖文），於活動開始前 7 天完成。"
+        oninput="saveDeptNotesTemp()">${val}</textarea>
+    </div>`;
+  }).join('');
+}
+
+function getDeptNotes() {
+  saveDeptNotesTemp();
+  return Object.assign({}, window._deptNotes || {});
+}
+function getSelectedDeptsFromChecks() {
+  return DEPTS.map(d => d.key).filter(key => {
+    const label = document.getElementById('deptlabel_' + key);
+    if (!label) return false;
+    return label.querySelector('input')?.checked;
+  });
+}
+
+function copyAdCopy() {
+  const copy = document.getElementById('pCopyDir').value.trim();
+  const link = document.getElementById('pLink').value.trim();
+  if (!copy && !link) { alert('請先填寫文案或連結'); return; }
+  const text = [copy, link].filter(Boolean).join('\n\n');
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = event.target.closest('button');
+    const orig = btn.textContent;
+    btn.textContent = '✅ 已複製！';
+    btn.style.background = 'var(--brand-light)';
+    setTimeout(()=>{ btn.textContent = orig; btn.style.background=''; }, 2000);
+  }).catch(()=>{
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    alert('已複製文案！');
+  });
+}
+
+function switchProjTab(idx, el) {
+  for (let i = 0; i <= 7; i++) {
+    const t = document.getElementById('ptab'+i);
+    if (t) t.style.display = i===idx ? '' : 'none';
+  }
+  document.querySelectorAll('#projModalTabs .tab').forEach((t,i)=>{
+    t.classList.toggle('active', i===idx);
+  });
+  if (idx === 6) renderDesignShortcuts();
+  if (idx === 7) buildDeptNotesArea();
+}
+
+let taskList_temp = [];
+function openProjModal(id) {
+  editingProjId = id || null;
+  taskList_temp = [];
+  // reset to tab 0
+  for (let i = 0; i <= 7; i++) { const t = document.getElementById('ptab'+i); if(t) t.style.display = i===0?'':'none'; }
+  document.querySelectorAll('#projModalTabs .tab').forEach((t,i)=>t.classList.toggle('active',i===0));
+
+  if (id) {
+    const all = loadAll();
+    const p = all.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('projModalTitle').textContent = '編輯活動專案';
+    document.getElementById('pName').value = p.name||'';
+    document.getElementById('pCat').value = p.cat||'node';
+    document.getElementById('pStart').value = p.start||'';
+    document.getElementById('pEnd').value = p.end||'';
+    document.getElementById('pGoal').value = p.goal||'';
+    document.getElementById('pMethod').value = p.method||'';
+    document.getElementById('pPricing').value = p.pricing||'';
+    document.getElementById('pSchedule').value = p.schedule||'';
+    document.getElementById('pStatus').value = p.status||'plan';
+    document.getElementById('pProgress').value = p.progress||0;
+    document.getElementById('pBudget').value = p.budget||'';
+    document.getElementById('pColor').value = p.color||'#2d6a4f';
+    document.getElementById('pCopyDir').value = p.copyDir||'';
+    document.getElementById('pLink').value = p.link||'';
+    document.getElementById('pDesign').value = p.design||'';
+    document.getElementById('pNote').value = p.note||'';
+    buildDeptChecks(p.depts||[], p.deptNotes||{});
+    taskList_temp = JSON.parse(JSON.stringify(p.tasks||[]));
+  } else {
+    document.getElementById('projModalTitle').textContent = '新增活動專案';
+    document.getElementById('pName').value = '';
+    document.getElementById('pCat').value = 'node';
+    const today = new Date().toISOString().slice(0,10);
+    document.getElementById('pStart').value = today;
+    document.getElementById('pEnd').value = today;
+    document.getElementById('pGoal').value = '';
+    document.getElementById('pMethod').value = '';
+    document.getElementById('pPricing').value = '';
+    document.getElementById('pSchedule').value = '';
+    document.getElementById('pStatus').value = 'plan';
+    document.getElementById('pProgress').value = 0;
+    document.getElementById('pBudget').value = '';
+    document.getElementById('pColor').value = '#2d6a4f';
+    document.getElementById('pCopyDir').value = '';
+    document.getElementById('pLink').value = '';
+    document.getElementById('pDesign').value = '';
+    document.getElementById('pNote').value = '';
+    buildDeptChecks([], {});
+  }
+  renderTaskList();
+  openMo('projModal');
+}
+
+function addTaskRow() {
+  // populate dept dropdown from current DEPTS
+  const sel = document.getElementById('tmDept');
+  sel.innerHTML = '<option value="">—</option>' +
+    loadDepts().map(d => `<option value="${d.key}">${d.label}</option>`).join('') +
+    '<option value="other">其他</option>';
+  document.getElementById('tmName').value = '';
+  document.getElementById('tmDue').value = '';
+  sel.value = '';
+  document.getElementById('tmNote').value = '';
+  openMo('taskModal');
+}
+function saveTaskFromModal() {
+  const name = document.getElementById('tmName').value.trim();
+  if (!name) { alert('請輸入任務名稱'); return; }
+  taskList_temp.push({ id: uid(), name, due: document.getElementById('tmDue').value, dept: document.getElementById('tmDept').value, note: document.getElementById('tmNote').value, done: false });
+  closeMo('taskModal');
+  renderTaskList();
+}
+function renderTaskList() {
+  const el = document.getElementById('taskList');
+  if (!taskList_temp.length) { el.innerHTML = '<p class="text-3" style="text-align:center;padding:12px">尚無任務</p>'; return; }
+  el.innerHTML = taskList_temp.map((t,i) => {
+    const dept = DEPT_LABELS[t.dept]||t.dept||'—';
+    return `<div class="task-row">
+      <div class="task-check ${t.done?'done':''}" onclick="toggleTempTask(${i})">${t.done?'✓':''}</div>
+      <div class="task-name ${t.done?'done-text':''}">${t.name}</div>
+      <div class="task-dept">${dept}</div>
+      <div class="task-date">${t.due||'—'}</div>
+      <button class="btn btn-danger btn-xs" onclick="removeTempTask(${i})">刪</button>
+    </div>`;
+  }).join('');
+}
+function toggleTempTask(i) { taskList_temp[i].done = !taskList_temp[i].done; renderTaskList(); }
+function removeTempTask(i) { taskList_temp.splice(i,1); renderTaskList(); }
+
+function saveProject() {
+  const name = document.getElementById('pName').value.trim();
+  const start = document.getElementById('pStart').value;
+  const end = document.getElementById('pEnd').value;
+  if (!name||!start||!end) { alert('請填寫活動名稱、開始與結束日期（在時程任務頁）'); return; }
+
+  const depts = getSelectedDeptsFromChecks();
+  const deptNotes = getDeptNotes();
+  const data = {
+    id: editingProjId || uid(),
+    year: curYear,
+    name, cat: document.getElementById('pCat').value,
+    start, end,
+    goal: document.getElementById('pGoal').value,
+    method: document.getElementById('pMethod').value,
+    pricing: document.getElementById('pPricing').value,
+    schedule: document.getElementById('pSchedule').value,
+    depts, deptNotes,
+    status: document.getElementById('pStatus').value,
+    progress: parseInt(document.getElementById('pProgress').value)||0,
+    budget: document.getElementById('pBudget').value,
+    color: document.getElementById('pColor').value,
+    tasks: taskList_temp,
+    copyDir: document.getElementById('pCopyDir').value,
+    link: document.getElementById('pLink').value,
+    design: document.getElementById('pDesign').value,
+    note: document.getElementById('pNote').value,
+    archived: false,
+  };
+
+  const all = loadAll();
+  if (editingProjId) {
+    const idx = all.findIndex(x => x.id === editingProjId);
+    if (idx >= 0) { data.createdAt = all[idx].createdAt; all[idx] = data; }
+    else { data.createdAt = new Date().toISOString(); all.push(data); }
+  } else { data.createdAt = new Date().toISOString(); all.push(data); }
+  saveAll(all);
+  closeMo('projModal');
+  renderCurrentPage();
+}
+
+// ============================================================
+// PROJECT LIST
+// ============================================================
+function showProjList() {
+  document.getElementById('projectsListView').style.display = '';
+  document.getElementById('projectDetailView').style.display = 'none';
+  viewingProjId = null;
+  document.getElementById('topbarRight').innerHTML = `<button class="btn btn-primary" onclick="openProjModal()">＋ 新增活動專案</button>`;
+}
+
+function renderProjects() {
+  const statusF = document.getElementById('projFilterStatus').value;
+  const catF    = document.getElementById('projFilterCat').value;
+  let projs = loadYear(curYear).filter(p => !p.archived);
+  if (statusF) projs = projs.filter(p => p.status === statusF);
+  if (catF)    projs = projs.filter(p => p.cat === catF);
+  projs.sort((a,b) => (a.start||'').localeCompare(b.start||''));
+
+  const grid = document.getElementById('projGrid');
+  const empty = document.getElementById('projEmpty');
+  if (!projs.length) { grid.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display = 'none';
+  grid.innerHTML = projs.map(p => projCardHTML(p, false)).join('');
+}
+
+function projCardHTML(p, isArchive) {
+  const cat = CATS[p.cat] || CATS.other;
+  const st  = STATUSES[p.status] || STATUSES.plan;
+  const prog = Math.min(p.progress||0, 100);
+  const depts = (p.depts||[]).map(d=>`<span class="dept-tag">${DEPT_LABELS[d]||d}</span>`).join('');
+  const archBadge = isArchive ? `<span class="archive-badge">${p.year} 年</span>` : '';
+  const actionsStyle = isArchive ? 'opacity:1' : '';  // always show on archive
+  return `<div class="proj-card" onclick="openProjDetail('${p.id}')">
+    ${archBadge}
+    <div class="proj-card-top">
+      <div class="proj-card-title">${p.name}</div>
+    </div>
+    <div class="proj-card-meta">
+      <span class="badge ${st.cls}">${st.label}</span>
+      <span class="chip" style="background:${cat.color}22;color:${cat.color}">${cat.label}</span>
+    </div>
+    <div class="proj-card-dates" style="font-size:11px;color:var(--text-3)">📅 ${p.start||'—'} → ${p.end||'—'}</div>
+    <div class="proj-card-depts">${depts}</div>
+    <div class="proj-card-footer">
+      <div class="progress-bar"><div class="progress-fill" style="width:${prog}%;background:${p.color||cat.color}"></div></div>
+      <span style="font-size:11px;color:var(--text-3)">${prog}%</span>
+      <div class="proj-card-actions" style="${actionsStyle}" onclick="event.stopPropagation()">
+        <button class="btn btn-outline btn-xs" onclick="exportWord('${p.id}')" title="匯出 Word">📄</button>
+        <button class="btn btn-outline btn-xs" onclick="openProjModal('${p.id}')">編輯</button>
+        ${isArchive
+          ? `<button class="btn btn-brand2 btn-xs" onclick="copyProjToYear('${p.id}',${curYear})">複製</button>
+             <button class="btn btn-danger btn-xs" onclick="deleteProj('${p.id}')">刪</button>`
+          : `<button class="btn btn-danger btn-xs" onclick="deleteProj('${p.id}')">刪</button>`}
+      </div>
+    </div>
+  </div>`;
+}
+
+// ============================================================
+// PROJECT DETAIL
+// ============================================================
+function openProjDetailFromTl(id) {
+  curPage = 'projects';
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-projects').classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.nav-item')[1].classList.add('active');
+  document.getElementById('pageTitle').textContent = '活動專案';
+  openProjDetail(id);
+}
+function openProjDetail(id) {
+  viewingProjId = id;
+  const all = loadAll();
+  const p = all.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('projectsListView').style.display = 'none';
+  document.getElementById('projectDetailView').style.display = '';
+  document.getElementById('topbarRight').innerHTML = `
+    <button class="btn btn-outline btn-sm" onclick="exportWord('${id}')">📄 匯出 Word</button>
+    <button class="btn btn-outline" onclick="openProjModal('${id}')">✏️ 編輯</button>
+    <button class="btn btn-primary" onclick="openProjModal()">＋ 新增</button>`;
+
+  const cat = CATS[p.cat] || CATS.other;
+  const st  = STATUSES[p.status] || STATUSES.plan;
+  const prog = Math.min(p.progress||0,100);
+
+  // Tasks
+  const today = new Date(); today.setHours(0,0,0,0);
+  const tasksHTML = (p.tasks||[]).length ? (p.tasks||[]).map((t,i) => {
+    const due = t.due ? new Date(t.due) : null;
+    const daysLeft = due ? Math.ceil((due-today)/86400000) : null;
+    let dueCls = 'task-date'; let dueLabel = t.due||'—';
+    if (due && !t.done) {
+      if (daysLeft < 0) { dueCls='task-date task-due-warn'; dueLabel='⚠️ 已逾期'; }
+      else if (daysLeft <= 7) { dueCls='task-date task-due-soon'; dueLabel='⏰ '+daysLeft+'天後'; }
+    }
+    const dept = DEPT_LABELS[t.dept]||t.dept||'';
+    return '<div class="task-row">'
+      +'<div class="task-check '+(t.done?'done':'')+'" onclick="toggleTask(\''+id+'\','+i+')">'+(t.done?'✓':'')+'</div>'
+      +'<div style="flex:1"><div class="task-name '+(t.done?'done-text':'')+'">'+t.name+'</div>'+(t.note?'<div class="text-3">'+t.note+'</div>':'')+'</div>'
+      +(dept?'<div class="task-dept">'+dept+'</div>':'')
+      +'<div class="'+dueCls+'">'+dueLabel+'</div>'
+      +'</div>';
+  }).join('') : '<div class="text-3" style="text-align:center;padding:16px">無任務</div>';
+
+  // Dept notes
+  const deptNotesHTML = (p.depts||[]).map(dk => {
+    const dep = DEPTS.find(d=>d.key===dk);
+    const note = (p.deptNotes||{})[dk]||'';
+    return '<div style="margin-bottom:14px;padding:12px;background:var(--bg);border-radius:var(--r-sm);border-left:3px solid '+(dep?dep.color:'#ccc')+'">'
+      +'<div style="font-size:12px;font-weight:700;margin-bottom:4px">'+(dep?dep.label:dk)+'</div>'
+      +'<div style="font-size:12px;color:var(--text-2);white-space:pre-wrap">'+(note||'（未填寫注意事項）')+'</div>'
+      +'</div>';
+  }).join('') || '<div class="text-3">未設定</div>';
+
+  document.getElementById('projDetailContent').innerHTML =
+    '<div class="proj-detail">'
+    // LEFT COLUMN
+    +'<div>'
+    // Header card
+    +'<div class="card mb4"><div class="card-header">'
+    +'<div><span class="badge '+st.cls+'" style="margin-right:8px">'+st.label+'</span>'
+    +'<span class="chip" style="background:'+cat.color+'22;color:'+cat.color+'">'+cat.label+'</span></div>'
+    +'<span class="text-3">'+p.year+' 年</span></div>'
+    +'<div class="card-body">'
+    +'<h2 style="font-size:18px;font-weight:700;margin-bottom:6px">'+p.name+'</h2>'
+    +'<div style="font-size:13px;color:var(--text-2);margin-bottom:10px">📅 '+p.start+' → '+p.end+'</div>'
+    +(p.budget?'<div style="font-size:12px;color:var(--text-3);margin-bottom:10px">規劃預算：NT$ '+fmt(p.budget)+'</div>':'')
+    +'<div class="flex gap-2"><div class="progress-bar" style="height:8px;flex:1"><div class="progress-fill" style="width:'+prog+'%;background:'+(p.color||cat.color)+'"></div></div>'
+    +'<span style="font-size:13px;font-weight:600">'+prog+'%</span></div>'
+    +'</div></div>'
+
+    +(p.goal?'<div class="card mb4"><div class="card-header"><span class="card-title">四、活動目標與預期效益</span></div>'
+    +'<div class="card-body" style="font-size:13px;white-space:pre-wrap">'+p.goal+'</div></div>':'')
+
+    +(p.method?'<div class="card mb4"><div class="card-header"><span class="card-title">二、活動辦法</span></div>'
+    +'<div class="card-body" style="font-size:13px;white-space:pre-wrap">'+p.method+'</div></div>':'')
+
+    +(p.pricing?'<div class="card mb4"><div class="card-header"><span class="card-title">三、定價策略</span></div>'
+    +'<div class="card-body"><pre style="font-size:12px;white-space:pre-wrap;font-family:inherit;color:var(--text-2)">'+p.pricing+'</pre></div></div>':'')
+
+    +'<div class="card mb4"><div class="card-header"><span class="card-title">五、時程任務</span>'
+    +'<span class="text-3">'+(p.tasks||[]).filter(t=>t.done).length+'/'+(p.tasks||[]).length+' 完成</span></div>'
+    +(p.schedule?'<div style="padding:10px 18px 0;font-size:12px;color:var(--text-2);white-space:pre-wrap;border-bottom:1px solid var(--border-2)">'+p.schedule+'</div>':'')
+    +'<div style="padding:0 18px">'+tasksHTML+'</div></div>'
+    +'</div>'
+
+    // RIGHT COLUMN
+    +'<div>'
+    +(p.copyDir||p.link?'<div class="card mb4"><div class="card-header"><span class="card-title">六、活動文案</span>'
+    +'<button class="btn btn-brand2 btn-sm" onclick="copyDetailAdCopy(\''+id+'\')">📋 複製文案+連結</button></div>'
+    +'<div class="card-body">'
+    +(p.copyDir?'<div style="font-size:13px;white-space:pre-wrap;margin-bottom:10px">'+p.copyDir+'</div>':'')
+    +(p.link?'<div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--bg);border-radius:6px;margin-top:8px">'
+    +'<span style="font-size:11px;color:var(--text-3)">連結：</span>'
+    +'<a href="'+p.link+'" target="_blank" style="font-size:12px;color:var(--blue);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+p.link+'</a>'
+    +'<button class="btn btn-outline btn-xs" onclick="navigator.clipboard.writeText(\''+p.link+'\')">複製</button></div>':'')
+    +'</div></div>':'')
+
+    +(p.design?'<div class="card mb4"><div class="card-header"><span class="card-title">七、設計需求</span></div>'
+    +'<div class="card-body" style="font-size:13px;white-space:pre-wrap">'+p.design+'</div></div>':'')
+
+    +'<div class="card mb4"><div class="card-header"><span class="card-title">八、協辦單位與注意事項</span></div>'
+    +'<div class="card-body">'+deptNotesHTML+'</div></div>'
+
+    +(p.note?'<div class="card"><div class="card-header"><span class="card-title">📝 備註</span></div>'
+    +'<div class="card-body" style="font-size:12px;color:var(--text-2);white-space:pre-wrap">'+p.note+'</div></div>':'')
+    +'</div>'
+    +'</div>';
+}
+
+function copyDetailAdCopy(id) {
+  const p = loadAll().find(x=>x.id===id);
+  if (!p) return;
+  const text = [p.copyDir, p.link].filter(Boolean).join('\n\n');
+  navigator.clipboard.writeText(text).then(()=>alert('已複製文案與連結！')).catch(()=>{
+    const ta = document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); alert('已複製！');
+  });
+}
+
+function toggleTask(projId, taskIdx) {
+  const all = loadAll();
+  const p = all.find(x => x.id === projId);
+  if (!p || !p.tasks[taskIdx]) return;
+  p.tasks[taskIdx].done = !p.tasks[taskIdx].done;
+  saveAll(all);
+  openProjDetail(projId);
+  updateNotifBadge();
+}
+
+function deleteProj(id) {
+  document.getElementById('confirmMsg').textContent = '確定要刪除這個活動專案嗎？資料無法復原。';
+  document.getElementById('confirmOkBtn').onclick = () => {
+    const all = loadAll().filter(x => x.id !== id);
+    saveAll(all);
+    closeMo('confirmMo');
+    renderCurrentPage();
+  };
+  openMo('confirmMo');
+}
+
+// ============================================================
+// ARCHIVE
+// ============================================================
+function updateArchiveFilter() {
+  const all = loadAll();
+  const years = [...new Set(all.map(p=>p.year))].sort().reverse();
+  const sel = document.getElementById('archiveFilterYear');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">所有年份</option>' + years.map(y=>`<option value="${y}" ${y==cur?'selected':''}>${y} 年</option>`).join('');
+}
+
+function renderArchive() {
+  const yearF = document.getElementById('archiveFilterYear').value;
+  const catF  = document.getElementById('archiveFilterCat').value;
+  const search = (document.getElementById('archiveSearch').value||'').toLowerCase();
+  let all = loadAll().filter(p => p.status === 'done' || p.archived);
+  // Also show all years' projects that are not current year
+  all = loadAll();
+  if (yearF) all = all.filter(p => p.year == yearF);
+  if (catF)  all = all.filter(p => p.cat === catF);
+  if (search) all = all.filter(p => (p.name||'').toLowerCase().includes(search));
+  all.sort((a,b) => b.year - a.year || (a.start||'').localeCompare(b.start||''));
+
+  const grid = document.getElementById('archiveGrid');
+  const empty = document.getElementById('archiveEmpty');
+  if (!all.length) { grid.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display = 'none';
+  grid.innerHTML = all.map(p => projCardHTML(p, true)).join('');
+}
+
+function copyProjToYear(id, targetYear) {
+  const all = loadAll();
+  const orig = all.find(x => x.id === id);
+  if (!orig) return;
+  const copy = JSON.parse(JSON.stringify(orig));
+  copy.id = uid();
+  copy.year = targetYear;
+  copy.status = 'plan';
+  copy.progress = 0;
+  copy.createdAt = new Date().toISOString();
+  // Clear task done state
+  (copy.tasks||[]).forEach(t => t.done = false);
+  all.push(copy);
+  saveAll(all);
+  alert(`已複製「${orig.name}」到 ${targetYear} 年！`);
+  renderArchive();
+}
+
+function openCopyModal() {
+  document.getElementById('copyTargetYear').textContent = curYear;
+  const all = loadAll().filter(p => p.year !== curYear);
+  const el = document.getElementById('copyProjList');
+  const empty = document.getElementById('copyEmpty');
+  if (!all.length) { el.innerHTML=''; empty.style.display=''; }
+  else {
+    empty.style.display = 'none';
+    el.innerHTML = all.map(p => {
+      const cat = CATS[p.cat]||CATS.other;
+      return `<div class="copy-proj-row" onclick="copyProjToYear('${p.id}',${curYear});closeMo('copyModal')">
+        <div><div style="font-size:13px;font-weight:600">${p.name}</div>
+          <div style="font-size:11px;color:var(--text-3)">${p.year} 年 · ${cat.label} · ${p.start||'—'}</div>
+        </div>
+        <button class="btn btn-brand2 btn-sm" onclick="event.stopPropagation();copyProjToYear('${p.id}',${curYear});closeMo('copyModal')">複製</button>
+      </div>`;
+    }).join('');
+  }
+  openMo('copyModal');
+}
+
+// ============================================================
+// NOTIFICATIONS
+// ============================================================
+function getNotifications() {
+  const all = loadAll();
+  const today = new Date(); today.setHours(0,0,0,0);
+  const notifs = [];
+  all.forEach(p => {
+    if (p.status === 'done' || p.status === 'cancel') return;
+    // Project start/end warning
+    if (p.start) {
+      const s = new Date(p.start); const dl = Math.ceil((s - today)/86400000);
+      if (dl >= 0 && dl <= 7) notifs.push({ ico:'🚀', text:`「${p.name}」將於 ${dl} 天後開始 (${p.start})`, time: p.start, proj: p.id });
+    }
+    if (p.end) {
+      const e = new Date(p.end); const dl = Math.ceil((e - today)/86400000);
+      if (dl >= 0 && dl <= 7) notifs.push({ ico:'🏁', text:`「${p.name}」將於 ${dl} 天後結束 (${p.end})`, time: p.end, proj: p.id });
+      if (dl < 0 && p.status !== 'done') notifs.push({ ico:'⚠️', text:`「${p.name}」已過結束日但未完成`, time: p.end, proj: p.id });
+    }
+    // Task warnings
+    (p.tasks||[]).filter(t=>!t.done && t.due).forEach(t => {
+      const due = new Date(t.due); const dl = Math.ceil((due-today)/86400000);
+      if (dl <= 3 && dl >= 0) notifs.push({ ico:'⏰', text:`【${p.name}】任務「${t.name}」${dl===0?'今天':'還有'+dl+'天'}到期`, time:t.due, proj:p.id });
+      if (dl < 0) notifs.push({ ico:'🔴', text:`【${p.name}】任務「${t.name}」已逾期 (${t.due})`, time:t.due, proj:p.id });
+    });
+  });
+  return notifs.sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+}
+
+function updateNotifBadge() {
+  const n = getNotifications().length;
+  const badge = document.getElementById('notifBadge');
+  badge.textContent = n;
+  badge.style.display = n > 0 ? '' : 'none';
+}
+
+function renderNotifPage() {
+  const notifs = getNotifications();
+  const el = document.getElementById('notifListFull');
+  if (!notifs.length) { el.innerHTML = '<div class="section-empty" style="padding:40px"><div class="ei">✅</div><p>目前沒有待處理提醒</p></div>'; return; }
+  el.innerHTML = notifs.map(n => `<div class="notif-item" style="cursor:pointer" onclick="openProjDetail('${n.proj}');gotoPage('projects',document.querySelector('.nav-item:nth-child(2)'))">
+    <div class="notif-ico">${n.ico}</div>
+    <div><div class="notif-text">${n.text}</div><div class="notif-time">${n.time||''}</div></div>
+  </div>`).join('');
+}
+
+// ============================================================
+// TAIWAN HOLIDAYS & MINI CALENDAR
+// ============================================================
+// ============================================================
+// CUSTOM HOLIDAY SYSTEM
+// ============================================================
+const DEFAULT_HOLIDAYS = [
+  { id:'h01', month:1,  day:1,  label:'元旦',           type:'holiday', mkt:'新年特惠、歲末回顧' },
+  { id:'h02', month:2,  day:10, label:'農曆新年（春節）', type:'holiday', mkt:'年節禮盒、春節限定組合' },
+  { id:'h03', month:2,  day:14, label:'情人節',           type:'event',   mkt:'情侶套餐、愛心商品' },
+  { id:'h04', month:3,  day:8,  label:'婦女節',           type:'event',   mkt:'女性健康主題、送媽媽系列' },
+  { id:'h05', month:4,  day:4,  label:'兒童節',           type:'holiday', mkt:'親子料理、家庭套組' },
+  { id:'h06', month:4,  day:5,  label:'清明節',           type:'holiday', mkt:'掃墓祭品、素食祭祀包' },
+  { id:'h07', month:5,  day:1,  label:'勞動節',           type:'holiday', mkt:'感謝勞工、員工福利包' },
+  { id:'h08', month:5,  day:11, label:'母親節',           type:'event',   mkt:'母親節禮盒、感恩套餐' },
+  { id:'h09', month:5,  day:31, label:'端午節前夕',       type:'event',   mkt:'素粽預購、直播銷售' },
+  { id:'h10', month:6,  day:2,  label:'端午節',           type:'holiday', mkt:'素粽販售衝刺、節日禮盒' },
+  { id:'h11', month:7,  day:7,  label:'七夕情人節',       type:'event',   mkt:'情侶分享餐、限定甜點' },
+  { id:'h12', month:8,  day:8,  label:'父親節',           type:'event',   mkt:'父親節禮盒、健康飲食推廣' },
+  { id:'h13', month:9,  day:17, label:'中秋節',           type:'holiday', mkt:'月餅禮盒、素食中秋套組' },
+  { id:'h14', month:9,  day:28, label:'教師節',           type:'holiday', mkt:'感謝師恩、教師優惠' },
+  { id:'h15', month:10, day:10, label:'國慶日',           type:'holiday', mkt:'雙十促銷、限定優惠' },
+  { id:'h16', month:10, day:31, label:'Halloween',        type:'event',   mkt:'創意萬聖造型餐、南瓜系列' },
+  { id:'h17', month:11, day:11, label:'雙11購物節',       type:'event',   mkt:'全館折扣、組合促銷大檔' },
+  { id:'h18', month:12, day:12, label:'雙12購物節',       type:'event',   mkt:'年末促銷、清庫存優惠' },
+  { id:'h19', month:12, day:25, label:'聖誕節',           type:'event',   mkt:'聖誕禮盒、跨年倒數特惠' },
+  { id:'h20', month:12, day:31, label:'跨年前夕',         type:'event',   mkt:'跨年特惠、年末回顧' },
+];
+let _holidaysCache = null;
+function loadHolidays() { return _holidaysCache || DEFAULT_HOLIDAYS; }
+function saveHolidays(list) { _holidaysCache = list; syncToFirestore('holidays', list); }
+
+function initHlYearSelect(selectedYear) {
+  const sel = document.getElementById('hlYear');
+  const cur = new Date().getFullYear();
+  sel.innerHTML = '<option value="0">每年通用</option>';
+  for (let y = cur - 1; y <= cur + 4; y++) {
+    const o = document.createElement('option');
+    o.value = y; o.textContent = y + ' 年';
+    if (y === selectedYear) o.selected = true;
+    sel.appendChild(o);
+  }
+  if (!selectedYear) sel.value = '0';
+}
+
+let editingHolidayId = null;
+function openHolidayModal(id) {
+  editingHolidayId = id || null;
+  if (id) {
+    const h = loadHolidays().find(x => x.id === id);
+    if (!h) return;
+    document.getElementById('holidayModalTitle').textContent = '編輯節慶';
+    document.getElementById('hlName').value  = h.label;
+    initHlYearSelect(h.year || 0);
+    document.getElementById('hlMonth').value = h.month;
+    document.getElementById('hlDay').value   = h.day;
+    document.getElementById('hlType').value  = h.type;
+    document.getElementById('hlMkt').value   = h.mkt || '';
+  } else {
+    document.getElementById('holidayModalTitle').textContent = '新增節慶 / 行銷節點';
+    document.getElementById('hlName').value  = '';
+    initHlYearSelect(0);
+    document.getElementById('hlMonth').value = new Date().getMonth() + 1;
+    document.getElementById('hlDay').value   = '';
+    document.getElementById('hlType').value  = 'event';
+    document.getElementById('hlMkt').value   = '';
+  }
+  openMo('holidayModal');
+}
+function saveHoliday() {
+  const label = document.getElementById('hlName').value.trim();
+  const month = parseInt(document.getElementById('hlMonth').value);
+  const day   = parseInt(document.getElementById('hlDay').value);
+  const year  = parseInt(document.getElementById('hlYear').value) || 0;
+  if (!label || !month || !day || day < 1 || day > 31) { alert('請填寫名稱、月份和日期'); return; }
+  const list = loadHolidays();
+  const data = {
+    id:    editingHolidayId || 'hc_' + uid(),
+    year, month, day, label,
+    type:  document.getElementById('hlType').value,
+    mkt:   document.getElementById('hlMkt').value.trim(),
+  };
+  if (editingHolidayId) {
+    const idx = list.findIndex(x => x.id === editingHolidayId);
+    if (idx >= 0) list[idx] = data; else list.push(data);
+  } else { list.push(data); }
+  list.sort((a,b) => {
+    if (a.month !== b.month) return a.month - b.month;
+    return a.day - b.day;
+  });
+  saveHolidays(list);
+  closeMo('holidayModal');
+  renderHolidays();
+}
+function deleteHoliday(id) {
+  document.getElementById('confirmMsg').textContent = '確定要刪除這個節慶 / 節點嗎？';
+  document.getElementById('confirmOkBtn').onclick = () => {
+    saveHolidays(loadHolidays().filter(x => x.id !== id));
+    closeMo('confirmMo');
+    renderHolidays();
+  };
+  openMo('confirmMo');
+}
+
+const TYPE_CONFIG = {
+  holiday: { label:'國定假日', bg:'var(--accent-light)',  color:'var(--accent)', dot:'#dc2626' },
+  event:   { label:'行銷節點', bg:'var(--blue-light)',    color:'var(--blue)',   dot:'#2563eb' },
+  custom:  { label:'自訂',    bg:'var(--brand-light)',   color:'var(--brand)', dot:'#2d6a4f' },
+};
+
+function initCalPlanYear() {
+  const sel = document.getElementById('calPlanYear');
+  if (!sel) return;
+  const cur = new Date().getFullYear();
+  const prev = parseInt(sel.value) || 0;
+  sel.innerHTML = '';
+  for (let y = cur; y <= cur + 3; y++) {
+    const o = document.createElement('option');
+    o.value = y; o.textContent = y + ' 年';
+    if (y === (prev || curYear)) o.selected = true;
+    sel.appendChild(o);
+  }
+}
+
+function renderHolidays() {
+  initCalPlanYear();
+  const monF  = parseInt(document.getElementById('holidayMonthSel').value) || 0;
+  const typeF = document.getElementById('holidayTypeSel').value;
+  const srch  = (document.getElementById('holidaySearch').value || '').toLowerCase();
+  const planYear = parseInt(document.getElementById('calPlanYear').value) || curYear;
+  let list = loadHolidays();
+  // Show: entries with year=0 (every year) OR year matching planYear
+  list = list.filter(h => !h.year || h.year === planYear);
+  if (monF)  list = list.filter(h => h.month === monF);
+  if (typeF) list = list.filter(h => h.type === typeF);
+  if (srch)  list = list.filter(h => (h.label+(h.mkt||'')).toLowerCase().includes(srch));
+
+  const grid  = document.getElementById('holidayGrid');
+  const empty = document.getElementById('holidayEmpty');
+  if (!list.length) { grid.innerHTML = ''; empty.style.display = ''; return; }
+  empty.style.display = 'none';
+
+  // Check which holidays already have a project in planYear
+  const existingProjs = loadYear(planYear).map(p => p.name);
+
+  // Group by month
+  const byMonth = {};
+  list.forEach(h => { if (!byMonth[h.month]) byMonth[h.month] = []; byMonth[h.month].push(h); });
+
+  grid.innerHTML = Object.entries(byMonth).map(([m, items]) => `
+    <div style="border-bottom:1px solid var(--border-2)">
+      <div style="padding:8px 18px 6px;font-size:12px;font-weight:700;color:var(--brand);background:var(--brand-light)">${m} 月</div>
+      ${items.map(h => {
+        const tc = TYPE_CONFIG[h.type] || TYPE_CONFIG.custom;
+        const alreadyAdded = existingProjs.some(n => n.includes(h.label));
+        return `<div style="display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--border-2)">
+          <div style="width:40px;font-size:13px;font-weight:700;color:${tc.dot};flex-shrink:0">${m}/${h.day}</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+              <span style="font-size:13px;font-weight:600">${h.label}</span>
+              <span style="font-size:10px;padding:1px 7px;border-radius:10px;background:${tc.bg};color:${tc.color};white-space:nowrap">${tc.label}</span>
+              ${h.year ? `<span style="font-size:10px;padding:1px 7px;border-radius:10px;background:var(--yellow-light);color:var(--yellow);white-space:nowrap">${h.year} 年專屬</span>` : ''}
+              ${alreadyAdded ? `<span style="font-size:10px;padding:1px 7px;border-radius:10px;background:var(--brand-light);color:var(--brand);white-space:nowrap">✓ ${planYear}年已規劃</span>` : ''}
+            </div>
+            ${h.mkt ? `<div style="font-size:11px;color:var(--text-3);margin-top:2px">💡 ${h.mkt}</div>` : ''}
+          </div>
+          <div style="display:flex;gap:4px;flex-shrink:0">
+            <button class="btn btn-brand2 btn-xs" onclick="quickAddFromHoliday(${JSON.stringify(h).replace(/"/g,'&quot;')},${planYear})">＋ ${planYear} 年規劃</button>
+            <button class="btn btn-outline btn-xs" onclick="openHolidayModal('${h.id}')">編輯</button>
+            <button class="btn btn-danger btn-xs" onclick="deleteHoliday('${h.id}')">刪</button>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`).join('');
+}
+
+function quickAddFromHoliday(h, planYear) {
+  const y = planYear || curYear;
+  gotoPage('projects', document.querySelectorAll('.nav-item')[1]);
+  openProjModal();
+  setTimeout(() => {
+    document.getElementById('pName').value  = `${y} ${h.label}活動`;
+    document.getElementById('pCat').value   = h.type === 'holiday' ? 'node' : 'promo';
+    document.getElementById('pStart').value = `${y}-${String(h.month).padStart(2,'0')}-01`;
+    document.getElementById('pEnd').value   = `${y}-${String(h.month).padStart(2,'0')}-${String(h.day).padStart(2,'0')}`;
+    document.getElementById('pGoal').value  = h.mkt || '';
+  }, 60);
+}
+
+// ============================================================
+// MANAGE DEPARTMENTS
+// ============================================================
+function openManageDepts() {
+  renderDeptsManager();
+  openMo('manageDeptsMo');
+}
+function renderDeptsManager() {
+  const list = loadDepts();
+  const el = document.getElementById('deptsManagerList');
+  if (!list.length) { el.innerHTML = '<div class="text-3">尚無部門</div>'; return; }
+  el.innerHTML = list.map(d => `
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-2)">
+      <span style="width:14px;height:14px;border-radius:50%;background:${d.color};flex-shrink:0;display:inline-block"></span>
+      <span style="flex:1;font-size:13px;font-weight:500">${d.label}</span>
+      <span style="font-size:11px;color:var(--text-3)">${d.key}</span>
+      <button class="btn btn-danger btn-xs" onclick="deleteDept('${d.key}')">刪除</button>
+    </div>`).join('');
+}
+function addNewDept() {
+  const name = document.getElementById('newDeptName').value.trim();
+  const color = document.getElementById('newDeptColor').value;
+  if (!name) { alert('請輸入部門名稱'); return; }
+  const key = 'dept_' + Date.now();
+  const list = loadDepts();
+  list.push({ key, label: name, color });
+  saveDepts(list);
+  DEPTS = list;
+  document.getElementById('newDeptName').value = '';
+  renderDeptsManager();
+  // rebuild the checkbox area so new dept shows immediately
+  const selected = getSelectedDeptsFromChecks();
+  buildDeptChecks(selected, window._deptNotes || {});
+}
+function deleteDept(key) {
+  if (!confirm('確定刪除此部門？')) return;
+  const list = loadDepts().filter(d => d.key !== key);
+  saveDepts(list);
+  DEPTS = list;
+  renderDeptsManager();
+  const selected = getSelectedDeptsFromChecks().filter(k => k !== key);
+  buildDeptChecks(selected, window._deptNotes || {});
+}
+function resetDeptsToDefault() {
+  if (!confirm('確定還原為預設部門？目前自訂部門將清除。')) return;
+  saveDepts(DEFAULT_DEPTS);
+  DEPTS = DEFAULT_DEPTS;
+  renderDeptsManager();
+  buildDeptChecks([], {});
+}
+const DEFAULT_SHORTCUTS = [
+  { id:'s1', label:'FB 廣告圖', spec:'FB 廣告圖 1040×1040' },
+  { id:'s2', label:'IG 貼文',   spec:'IG 貼文 1080×1080' },
+  { id:'s3', label:'IG 限時',   spec:'IG 限時動態 1080×1920' },
+  { id:'s4', label:'網站 Banner', spec:'網站 Banner 1920×600' },
+  { id:'s5', label:'Line Banner', spec:'Line@ Banner 1040×400' },
+  { id:'s6', label:'FB 封面',   spec:'FB 封面照片 820×312' },
+  { id:'s7', label:'短影音',    spec:'短影音素材 1080×1920（9:16）' },
+  { id:'s8', label:'EDM Header', spec:'EDM Header 600×200' },
+];
+let _shortcutsCache = null;
+function loadShortcuts() { return _shortcutsCache || DEFAULT_SHORTCUTS; }
+function saveShortcuts(list) { _shortcutsCache = list; syncToFirestore('shortcuts', list); }
+
+function renderDesignShortcuts() {
+  const list = loadShortcuts();
+  const el = document.getElementById('designShortcuts');
+  if (!el) return;
+  el.innerHTML = list.map(s =>
+    `<div style="display:flex;align-items:center;gap:2px">
+      <button class="btn btn-brand2 btn-xs" onclick="insertDesignSpec(${JSON.stringify(s.spec).replace(/"/g,'&quot;')})" title="${s.spec}">${s.label}</button>
+      <button onclick="deleteShortcut('${s.id}')" style="background:none;border:none;cursor:pointer;color:var(--text-3);font-size:11px;padding:2px 3px;border-radius:3px" title="刪除此快捷">×</button>
+    </div>`
+  ).join('');
+}
+function insertDesignSpec(spec) {
+  const ta = document.getElementById('pDesign');
+  if (!ta) return;
+  const cur = ta.value;
+  const add = (cur && !cur.endsWith('\n') ? '\n' : '') + '• ' + spec;
+  ta.value = cur + add;
+  ta.focus();
+  ta.setSelectionRange(ta.value.length, ta.value.length);
+}
+function deleteShortcut(id) {
+  const list = loadShortcuts().filter(s => s.id !== id);
+  saveShortcuts(list);
+  renderDesignShortcuts();
+}
+function openAddShortcut() {
+  document.getElementById('scLabel').value = '';
+  document.getElementById('scSpec').value = '';
+  openMo('shortcutModal');
+}
+function saveShortcut() {
+  const label = document.getElementById('scLabel').value.trim();
+  const spec  = document.getElementById('scSpec').value.trim();
+  if (!label || !spec) { alert('請填寫名稱和規格說明'); return; }
+  const list = loadShortcuts();
+  list.push({ id: 'sc_'+uid(), label, spec });
+  saveShortcuts(list);
+  closeMo('shortcutModal');
+  renderDesignShortcuts();
+}
+function openMo(id) { document.getElementById(id).classList.add('open'); }
+function closeMo(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.mo').forEach(m => m.addEventListener('click', e => { if(e.target===m) closeMo(m.id); }));
+
+// ============================================================
+// SEED DEMO DATA
+// ============================================================
+function seedDemo() {
+  if (loadAll().length > 0) return;
+  const projs = [
+    {
+      id: uid(), year: 2025, name: '2025 端午節活動', cat: 'node',
+      start: '2025-04-14', end: '2025-05-31',
+      goal: '素粽總銷售目標 8 萬顆，提高品牌知名度，帶動加盟門市銷售，擴展團購市場',
+      depts: ['marketing','product','finance','ops','sales'],
+      status: 'doing', progress: 45, budget: '300000', color: '#e76f51',
+      pricing: '直播價 (4/14~4/16)：20顆裝 920元\n早鳥價 (4/17~4/30)：20顆裝 950元、10顆袋裝 550元\n正常售價 (5/1起)：1050元',
+      method: '本次活動採三階段價格：「直播價」、「早鳥價」、「正常售價」。\n1. 直播價期間：4/14~4/16 晚上8點兩場直播\n2. 早鳥優惠期間：4/17~4/30\n3. 正常售價期間：5/1起\n線上銷售限量5萬顆（慧君負責分配），線下3萬顆（文弘負責分配）。',
+      schedule: '4月初：拍攝產品照片、文宣設計\n4/14、4/16：直播銷售推廣（晚上8點）\n4/17~4/30：早鳥價促銷\n5/1後：正常價格銷售',
+      link: 'https://dlsveg.com.tw',
+      deptNotes: {
+        marketing: '負責設計及規劃活動宣傳素材，包含網站Banner、Line@ Banner、FB素材、短影音',
+        product: '確保庫存備貨充足，線上5萬顆、線下3萬顆',
+        finance: '計算加盟店及經銷商進貨價格',
+        ops: '協助門市活動推廣',
+        sales: '聯繫經銷商，推廣團購方案'
+      },
+      tasks: [
+        { id:uid(), name:'拍攝產品照片與文宣設計', due:'2025-04-10', dept:'design', note:'', done:true },
+        { id:uid(), name:'直播銷售推廣 (4/14、4/16)', due:'2025-04-16', dept:'marketing', note:'晚上8點兩場直播', done:true },
+        { id:uid(), name:'早鳥價上線與推廣', due:'2025-04-17', dept:'marketing', note:'', done:false },
+        { id:uid(), name:'確認庫存備貨', due:'2025-04-12', dept:'product', note:'線上5萬顆、線下3萬顆', done:true },
+        { id:uid(), name:'計算加盟店及經銷商進貨價格', due:'2025-04-08', dept:'finance', note:'', done:true },
+        { id:uid(), name:'聯繫經銷商推廣團購方案', due:'2025-04-20', dept:'sales', note:'', done:false },
+      ],
+      copyDir: '🔥 一年熱銷30萬顆！端午必搶，錯過等明年！🔥\n強調「手工製作、傳承古法」，突顯素粽獨特風味。\n推廣「端午家人團聚，健康美味的選擇」。\n直播內容強調產品特色、優惠方案與限量供應。',
+      design: '網站Banner、Line@ Banner、Facebook宣傳素材、短影音宣傳素材',
+      note: '線上銷售限量5萬顆（慧君負責）、線下3萬顆（文弘負責）',
+      archived: false, createdAt: '2025-03-01T00:00:00Z'
+    },
+    {
+      id: uid(), year: 2025, name: '母親節感恩活動', cat: 'promo',
+      start: '2025-05-01', end: '2025-05-12',
+      goal: '提升品牌溫度，帶動5月業績',
+      depts: ['marketing','design'],
+      status: 'plan', progress: 10, budget: '80000', color: '#7c3aed',
+      pricing: '', tasks: [
+        { id:uid(), name:'設計母親節限定包裝', due:'2025-04-25', dept:'design', note:'', done:false },
+        { id:uid(), name:'規劃限定組合優惠', due:'2025-04-20', dept:'marketing', note:'', done:false },
+      ],
+      copyDir: '', design: '', note: '', archived: false, createdAt: '2025-03-15T00:00:00Z'
+    },
+    {
+      id: uid(), year: 2024, name: '2024 端午節活動', cat: 'node',
+      start: '2024-05-15', end: '2024-06-10',
+      goal: '素粽銷售目標 6 萬顆',
+      depts: ['marketing','product','sales'],
+      status: 'done', progress: 100, budget: '250000', color: '#e76f51',
+      pricing: '早鳥價：800元/20顆\n正常售價：950元/20顆',
+      tasks: [{ id:uid(), name:'文宣設計', due:'2024-05-10', dept:'design', note:'', done:true }],
+      copyDir: '以「純素、天然」為主訴求', design: 'Banner、社群素材', note: '去年執行順利，今年可加入直播', archived:false, createdAt:'2024-03-01T00:00:00Z'
+    }
+  ];
+  saveAll(projs);
+}
+
+// ============================================================
+// WORD EXPORT
+// ============================================================
+function exportWord(id) {
+  const p = loadAll().find(x=>x.id===id);
+  if (!p) return;
+  const cat = CATS[p.cat]||CATS.other;
+  const st = STATUSES[p.status]||STATUSES.plan;
+
+  const section = (title, content) => content
+    ? `<h2 style="color:#2d6a4f;font-size:14pt;border-bottom:1px solid #2d6a4f;padding-bottom:4px;margin-top:18px">${title}</h2><div style="font-size:11pt;line-height:1.8;white-space:pre-wrap">${content}</div>`
+    : '';
+
+  const tasksRows = (p.tasks||[]).map(t => {
+    const dep = DEPT_LABELS[t.dept]||'—';
+    return `<tr><td style="padding:5px 8px;border:1px solid #ddd">${t.name}</td><td style="padding:5px 8px;border:1px solid #ddd">${dep}</td><td style="padding:5px 8px;border:1px solid #ddd">${t.due||'—'}</td><td style="padding:5px 8px;border:1px solid #ddd;text-align:center">${t.done?'✓':'○'}</td></tr>`;
+  }).join('');
+
+  const deptRows = (p.depts||[]).map(dk => {
+    const dep = DEPTS.find(d=>d.key===dk);
+    const note = (p.deptNotes||{})[dk]||'（未填寫）';
+    return `<tr><td style="padding:8px;border:1px solid #ddd;font-weight:600;white-space:nowrap">${dep?dep.label:dk}</td><td style="padding:8px;border:1px solid #ddd;white-space:pre-wrap">${note}</td></tr>`;
+  }).join('');
+
+  const html = `<html><head><meta charset="UTF-8">
+  <style>
+    body{font-family:'標楷體','DFKai-SB','Microsoft JhengHei',sans-serif;font-size:12pt;line-height:1.8;margin:2cm;color:#1a1a1a}
+    h1{color:#2d6a4f;font-size:18pt;text-align:center;margin-bottom:4px}
+    .meta{text-align:center;color:#666;font-size:10pt;margin-bottom:20px}
+    h2{color:#2d6a4f;font-size:13pt;border-bottom:2px solid #2d6a4f;padding-bottom:4px;margin-top:20px}
+    table{width:100%;border-collapse:collapse;margin-top:8px;font-size:10.5pt}
+    th{background:#2d6a4f;color:white;padding:6px 8px;border:1px solid #2d6a4f;text-align:left}
+    .badge{display:inline-block;padding:2px 10px;border-radius:4px;font-size:10pt;background:#e8f5e9;color:#2d6a4f;border:1px solid #2d6a4f}
+    .copybox{background:#f5f5f5;padding:12px;border-left:4px solid #2d6a4f;margin-top:8px;font-size:10.5pt;white-space:pre-wrap}
+  </style>
+  </head><body>
+  <h1>${p.name}</h1>
+  <div class="meta">
+    <span class="badge">${st.label}</span>&nbsp;
+    ${cat.label} &nbsp;|&nbsp; ${p.start} → ${p.end}
+    ${p.budget ? ' &nbsp;|&nbsp; 規劃預算 NT$ '+Number(p.budget).toLocaleString() : ''}
+  </div>
+
+  ${section('一、活動名稱', p.name + '（'+p.year+'年）')}
+  ${section('二、活動辦法', p.method)}
+  ${section('三、定價策略', p.pricing)}
+  ${section('四、活動目標與預期效益', p.goal)}
+
+  <h2>五、時程安排</h2>
+  ${p.schedule ? '<div style="font-size:11pt;line-height:1.8;white-space:pre-wrap;margin-bottom:10px">'+p.schedule+'</div>' : ''}
+  ${tasksRows ? '<table><thead><tr><th>任務名稱</th><th>負責單位</th><th>截止日期</th><th>完成</th></tr></thead><tbody>'+tasksRows+'</tbody></table>' : ''}
+
+  <h2>六、活動文案</h2>
+  ${p.copyDir ? '<div class="copybox">'+p.copyDir+'</div>' : '<div style="color:#999">（未填寫）</div>'}
+  ${p.link ? '<div style="margin-top:8px;font-size:10.5pt">活動連結：<a href="'+p.link+'">'+p.link+'</a></div>' : ''}
+
+  ${section('七、設計需求', p.design)}
+
+  <h2>八、協辦單位與注意事項</h2>
+  ${deptRows ? '<table><thead><tr><th style="width:100px">單位</th><th>注意事項</th></tr></thead><tbody>'+deptRows+'</tbody></table>' : '<div style="color:#999">（未設定）</div>'}
+
+  ${p.note ? '<h2>備註</h2><div style="font-size:11pt;white-space:pre-wrap">'+p.note+'</div>' : ''}
+
+  <div style="margin-top:40px;font-size:9pt;color:#999;text-align:center;border-top:1px solid #eee;padding-top:10px">
+    得來素行銷企劃系統 · 匯出時間：${new Date().toLocaleString('zh-TW')}
+  </div>
+  </body></html>`;
+
+  const blob = new Blob(['\ufeff'+html], {type:'application/msword;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = p.name.replace(/[/\\?%*:|"<>]/g,'_') + '_企劃書.doc';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ============================================================
+// FIREBASE CONFIG
+// ============================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyCMnHuSPNX8kJC53eYgWHXUV4BQjXhM7uo",
+  authDomain: "derlife-audit.firebaseapp.com",
+  projectId: "derlife-audit",
+  storageBucket: "derlife-audit.firebasestorage.app",
+  messagingSenderId: "992417419976",
+  appId: "1:992417419976:web:8b44d06620ca2e8cd5cbfd"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const WHITELIST_COL = 'marketing-planner-whitelist';
+const DATA_REF = () => db.collection('marketing-planner-data').doc('main');
+
+let currentUser = null;
+let isAdmin = false;
+
+// ============================================================
+// FIRESTORE 同步（非同步寫入，不阻塞 UI）
+// ============================================================
+function syncToFirestore(field, value) {
+  DATA_REF().set({ [field]: value }, { merge: true }).catch(e => console.warn('Firestore sync:', e));
+}
+
+// ============================================================
+// AUTH 流程
+// ============================================================
+async function doGoogleLogin() {
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('loginError');
+  const loading = document.getElementById('loginLoading');
+  btn.disabled = true;
+  err.textContent = '';
+  loading.textContent = '登入中...';
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const result = await auth.signInWithPopup(provider);
+    await verifyWhitelist(result.user);
+  } catch(e) {
+    if (e.code !== 'auth/popup-closed-by-user') {
+      err.textContent = '登入失敗：' + (e.message || e.code);
+    }
+    btn.disabled = false;
+    loading.textContent = '';
+  }
+}
+
+async function verifyWhitelist(user) {
+  const email = user.email;
+  const err = document.getElementById('loginError');
+  const loading = document.getElementById('loginLoading');
+  loading.textContent = '驗證權限中...';
+  try {
+    // 檢查白名單是否為空（首位登入者自動成為管理員）
+    const allDocs = await db.collection(WHITELIST_COL).limit(1).get();
+    if (allDocs.empty) {
+      await db.collection(WHITELIST_COL).doc(email).set({
+        email, role: 'admin',
+        addedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        addedBy: 'system-first-user'
+      });
+      await showApp(user, true);
+      return;
+    }
+    const docSnap = await db.collection(WHITELIST_COL).doc(email).get();
+    if (!docSnap.exists) {
+      await auth.signOut();
+      err.textContent = '您的帳號未被授權使用此系統，請聯繫管理員。';
+      document.getElementById('loginBtn').disabled = false;
+      loading.textContent = '';
+      return;
+    }
+    const isAdminUser = docSnap.data().role === 'admin';
+    await showApp(user, isAdminUser);
+  } catch(e) {
+    err.textContent = '驗證失敗：' + (e.message || e.code);
+    document.getElementById('loginBtn').disabled = false;
+    loading.textContent = '';
+  }
+}
+
+async function showApp(user, admin) {
+  currentUser = user;
+  isAdmin = admin;
+
+  // 從 Firestore 載入資料，寫入快取
+  try {
+    const doc = await DATA_REF().get();
+    if (doc.exists) {
+      const d = doc.data();
+      if (d.projects)  _allCache       = d.projects;
+      if (d.depts)     _deptsCache     = d.depts;
+      if (d.holidays)  _holidaysCache  = d.holidays;
+      if (d.shortcuts) _shortcutsCache = d.shortcuts;
+    }
+  } catch(e) {
+    console.warn('Firestore 資料載入失敗，使用本機預設值:', e);
+  }
+
+  // 更新部門快取
+  DEPTS = loadDepts();
+  Object.keys(DEPT_LABELS).forEach(k => delete DEPT_LABELS[k]);
+  DEPTS.forEach(d => DEPT_LABELS[d.key] = d.label);
+
+  // 顯示 App，隱藏登入畫面
+  document.getElementById('loginScreen').style.display = 'none';
+
+  // 更新側邊欄使用者資訊
+  document.getElementById('sidebarUser').innerHTML =
+    `<div style="font-weight:500;color:var(--text)">${user.displayName || user.email}</div>` +
+    `<div style="color:var(--text-3)">${user.email}</div>` +
+    (admin ? `<div class="role-badge role-admin" style="margin-top:4px">管理員</div>` : `<div class="role-badge role-user" style="margin-top:4px">使用者</div>`);
+
+  // 管理員才顯示帳號管理選項
+  if (admin) {
+    document.getElementById('adminNavSec').style.display = '';
+    document.getElementById('whitelistNav').style.display = '';
+  }
+
+  // 初始化 App
+  initYear();
+  seedDemo();
+  renderTimeline();
+  updateNotifBadge();
+}
+
+async function doLogout() {
+  await auth.signOut();
+}
+
+// ============================================================
+// 白名單管理
+// ============================================================
+function openAddUserModal() {
+  document.getElementById('newUserEmail').value = '';
+  document.getElementById('newUserRole').value = 'user';
+  document.getElementById('addUserError').textContent = '';
+  openMo('addUserModal');
+}
+
+async function addWhitelistUser() {
+  const email = document.getElementById('newUserEmail').value.trim().toLowerCase();
+  const role  = document.getElementById('newUserRole').value;
+  const err   = document.getElementById('addUserError');
+  if (!email || !email.includes('@')) { err.textContent = '請輸入有效的 Email'; return; }
+  try {
+    await db.collection(WHITELIST_COL).doc(email).set({
+      email, role,
+      addedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      addedBy: currentUser.email
+    });
+    closeMo('addUserModal');
+    renderWhitelistPage();
+  } catch(e) {
+    err.textContent = '新增失敗：' + e.message;
+  }
+}
+
+async function removeWhitelistUser(email) {
+  if (email === currentUser.email) { alert('無法刪除自己的帳號'); return; }
+  if (!confirm(`確定要移除 ${email} 的授權嗎？`)) return;
+  await db.collection(WHITELIST_COL).doc(email).delete();
+  renderWhitelistPage();
+}
+
+async function renderWhitelistPage() {
+  const tbody = document.getElementById('wlTableBody');
+  const empty = document.getElementById('wlEmpty');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="4" style="padding:16px;color:var(--text-3);text-align:center">載入中...</td></tr>';
+  const snap = await db.collection(WHITELIST_COL).orderBy('addedAt', 'asc').get();
+  if (snap.empty) {
+    tbody.innerHTML = '';
+    empty.style.display = '';
+    return;
+  }
+  empty.style.display = 'none';
+  tbody.innerHTML = snap.docs.map(d => {
+    const u = d.data();
+    const ts = u.addedAt ? new Date(u.addedAt.seconds*1000).toLocaleDateString('zh-TW') : '—';
+    const isSelf = u.email === currentUser.email;
+    return `<tr>
+      <td>${u.email}${isSelf ? ' <span style="font-size:10px;color:var(--text-3)">(本帳號)</span>' : ''}</td>
+      <td><span class="role-badge ${u.role==='admin'?'role-admin':'role-user'}">${u.role==='admin'?'管理員':'使用者'}</span></td>
+      <td>${ts}</td>
+      <td>${isSelf ? '—' : `<button class="btn btn-danger btn-xs" onclick="removeWhitelistUser('${u.email}')">移除</button>`}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ============================================================
+// 監聽登入狀態
+// ============================================================
+auth.onAuthStateChanged(async (user) => {
+  if (user) {
+    await verifyWhitelist(user);
+  } else {
+    currentUser = null;
+    isAdmin = false;
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('loginBtn').disabled = false;
+    document.getElementById('loginLoading').textContent = '';
+  }
+});
+
+// 白名單頁面進入時由 nav 的 onclick 直接呼叫
+</script>
+</body>
+</html>
