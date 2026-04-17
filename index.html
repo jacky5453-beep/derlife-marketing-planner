@@ -7,11 +7,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --brand: #2d6a4f;
-  --brand-light: #d8f3dc;
-  --brand-mid: #52b788;
-  --accent: #e76f51;
-  --accent-light: #fde8e4;
+  --brand: #7ab800;        /* 得來素主色（深一點，方便文字使用） */
+  --brand-lime: #C3F000;   /* 品牌生機綠 */
+  --brand-light: #f0fca0;  /* 淡綠背景 */
+  --brand-dark: #1A1A16;   /* 深色底 */
+  --brand-mid: #FFAA00;    /* 朝氣橘 */
+  --accent: #FFAA00;
+  --accent-light: #fff8e1;
   --blue: #2563eb;
   --blue-light: #eff4ff;
   --yellow: #d97706;
@@ -38,16 +40,16 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 .app{display:flex;height:100vh;overflow:hidden}
 
 /* SIDEBAR */
-.sidebar{width:210px;background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
-.logo{padding:18px 16px 14px;border-bottom:1px solid var(--border-2)}
-.logo-brand{font-size:15px;font-weight:700;color:var(--brand)}
-.logo-sub{font-size:11px;color:var(--text-3);margin-top:2px}
-.year-pick{margin:10px 12px 2px;display:flex;align-items:center;gap:6px;background:var(--brand-light);padding:8px 10px;border-radius:var(--r-sm)}
-.year-pick select{font-family:inherit;font-size:13px;font-weight:600;color:var(--brand);background:none;border:none;outline:none;cursor:pointer;flex:1}
-.nav-sec{font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.7px;padding:14px 14px 5px}
-.nav-item{display:flex;align-items:center;gap:9px;padding:8px 14px;margin:1px 8px;border-radius:var(--r-sm);cursor:pointer;color:var(--text-2);font-size:13px;transition:all .15s}
-.nav-item:hover{background:var(--bg);color:var(--text)}
-.nav-item.active{background:var(--brand-light);color:var(--brand);font-weight:600}
+.sidebar{width:220px;background:var(--brand-dark);border-right:none;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.logo{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+.logo img{filter:brightness(0) invert(1)}  /* logo 在深色背景顯示白色 */
+.logo-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:4px}
+.year-pick{margin:10px 12px 2px;display:flex;align-items:center;gap:6px;background:rgba(195,240,0,.12);padding:8px 10px;border-radius:var(--r-sm);border:1px solid rgba(195,240,0,.2)}
+.year-pick select{font-family:inherit;font-size:13px;font-weight:600;color:var(--brand-lime);background:none;border:none;outline:none;cursor:pointer;flex:1}
+.nav-sec{font-size:10px;font-weight:600;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.7px;padding:14px 16px 5px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 14px;margin:1px 8px;border-radius:var(--r-sm);cursor:pointer;color:rgba(255,255,255,.6);font-size:13px;transition:all .15s}
+.nav-item:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.9)}
+.nav-item.active{background:var(--brand-lime);color:var(--brand-dark);font-weight:700}
 .nav-item .ni{font-size:15px;width:18px;text-align:center}
 .nav-badge{margin-left:auto;background:var(--accent);color:white;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px}
 
@@ -63,8 +65,8 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
 
 /* BUTTONS */
 .btn{padding:7px 14px;border-radius:var(--r-sm);font-family:inherit;font-size:13px;font-weight:500;border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
-.btn-primary{background:var(--brand);color:white}.btn-primary:hover{background:#1b5038}
-.btn-brand2{background:var(--brand-light);color:var(--brand)}.btn-brand2:hover{background:#b7e4c7}
+.btn-primary{background:var(--brand-lime);color:var(--brand-dark)}.btn-primary:hover{background:#afd600}
+.btn-brand2{background:var(--brand-light);color:var(--brand)}.btn-brand2:hover{background:#e2f570}
 .btn-outline{background:none;color:var(--text-2);border:1px solid var(--border)}.btn-outline:hover{background:var(--bg);color:var(--text)}
 .btn-accent{background:var(--accent);color:white}.btn-accent:hover{background:#c85a3f}
 .btn-danger{background:var(--red-light);color:var(--red)}.btn-danger:hover{background:#fee2e2}
@@ -318,9 +320,9 @@ textarea.fc{resize:vertical}
   <div class="nav-sec" id="adminNavSec" style="display:none">管理員</div>
   <div class="nav-item" id="whitelistNav" style="display:none" onclick="gotoPage('whitelist',this);renderWhitelistPage()"><span class="ni">🔐</span>帳號管理</div>
   <!-- 使用者資訊 -->
-  <div style="margin-top:auto;padding:12px;border-top:1px solid var(--border-2)">
-    <div id="sidebarUser" style="font-size:11px;color:var(--text-3)"></div>
-    <button onclick="doLogout()" style="margin-top:8px;width:100%;padding:6px;border-radius:var(--r-sm);font-family:inherit;font-size:12px;border:1px solid var(--border);background:none;cursor:pointer;color:var(--text-2)" onmouseover="this.style.background='var(--red-light)';this.style.color='var(--red)'" onmouseout="this.style.background='none';this.style.color='var(--text-2)'">登出</button>
+  <div style="margin-top:auto;padding:12px 14px 16px;border-top:1px solid rgba(255,255,255,.08)">
+    <div id="sidebarUser" style="font-size:11px;color:rgba(255,255,255,.5)"></div>
+    <button onclick="doLogout()" style="margin-top:8px;width:100%;padding:7px;border-radius:var(--r-sm);font-family:inherit;font-size:12px;border:1px solid rgba(255,255,255,.15);background:none;cursor:pointer;color:rgba(255,255,255,.5);transition:all .15s" onmouseover="this.style.background='rgba(220,38,38,.25)';this.style.color='#fca5a5';this.style.borderColor='rgba(220,38,38,.4)'" onmouseout="this.style.background='none';this.style.color='rgba(255,255,255,.5)';this.style.borderColor='rgba(255,255,255,.15)'">登出</button>
   </div>
 </nav>
 
@@ -507,7 +509,7 @@ textarea.fc{resize:vertical}
       </div>
       <div class="card-body" style="padding:0">
         <table class="wl-table">
-          <thead><tr><th>Email</th><th>角色</th><th>加入時間</th><th>操作</th></tr></thead>
+          <thead><tr><th>姓名</th><th>Email</th><th>角色</th><th>加入時間</th><th>操作</th></tr></thead>
           <tbody id="wlTableBody"></tbody>
         </table>
         <div id="wlEmpty" style="text-align:center;padding:32px;color:var(--text-3);font-size:13px;display:none">尚無授權帳號</div>
@@ -533,9 +535,13 @@ textarea.fc{resize:vertical}
   <div class="mo-box" style="max-width:400px">
     <div class="mo-head">
       <div class="mo-title">新增授權帳號</div>
-      <button class="mo-close" onclick="closeMo('addUserModal')">✕</button>
+      <button class="mo-close" onclick="closeAddUserModal()">✕</button>
     </div>
     <div class="mo-body">
+      <div class="fg">
+        <label class="fl">姓名 *</label>
+        <input class="fc" id="newUserName" placeholder="例：關登元">
+      </div>
       <div class="fg">
         <label class="fl">Google 帳號 Email *</label>
         <input class="fc" id="newUserEmail" type="email" placeholder="example@gmail.com">
@@ -550,7 +556,7 @@ textarea.fc{resize:vertical}
       <div id="addUserError" style="font-size:12px;color:var(--red);min-height:16px"></div>
     </div>
     <div class="mo-foot">
-      <button class="btn btn-outline" onclick="closeMo('addUserModal')">取消</button>
+      <button class="btn btn-outline" onclick="closeAddUserModal()">取消</button>
       <button class="btn btn-primary" onclick="addWhitelistUser()">確認新增</button>
     </div>
   </div>
@@ -2244,9 +2250,9 @@ async function showApp(user, admin) {
 
   // 更新側邊欄使用者資訊
   document.getElementById('sidebarUser').innerHTML =
-    `<div style="font-weight:500;color:var(--text)">${user.displayName || user.email}</div>` +
-    `<div style="color:var(--text-3)">${user.email}</div>` +
-    (admin ? `<div class="role-badge role-admin" style="margin-top:4px">管理員</div>` : `<div class="role-badge role-user" style="margin-top:4px">使用者</div>`);
+    `<div style="font-weight:600;color:rgba(255,255,255,.85);font-size:12px">${user.displayName || user.email}</div>` +
+    `<div style="color:rgba(255,255,255,.4);font-size:11px;margin-top:1px">${user.email}</div>` +
+    (admin ? `<div class="role-badge role-admin" style="margin-top:5px">管理員</div>` : `<div class="role-badge role-user" style="margin-top:5px">使用者</div>`);
 
   // 管理員才顯示帳號管理選項
   if (admin) {
@@ -2269,27 +2275,64 @@ async function doLogout() {
 // 白名單管理
 // ============================================================
 function openAddUserModal() {
+  document.getElementById('newUserName').value = '';
   document.getElementById('newUserEmail').value = '';
   document.getElementById('newUserRole').value = 'user';
   document.getElementById('addUserError').textContent = '';
+  document.querySelector('#addUserModal .mo-title').textContent = '新增授權帳號';
+  document.querySelector('#addUserModal .mo-foot .btn-primary').textContent = '確認新增';
+  document.querySelector('#addUserModal .mo-foot .btn-primary').onclick = addWhitelistUser;
   openMo('addUserModal');
 }
 
+function openEditUserModal(email, name, role) {
+  document.getElementById('newUserName').value = name || '';
+  document.getElementById('newUserEmail').value = email;
+  document.getElementById('newUserEmail').disabled = true;
+  document.getElementById('newUserRole').value = role || 'user';
+  document.getElementById('addUserError').textContent = '';
+  document.querySelector('#addUserModal .mo-title').textContent = '編輯帳號資料';
+  document.querySelector('#addUserModal .mo-foot .btn-primary').textContent = '儲存變更';
+  document.querySelector('#addUserModal .mo-foot .btn-primary').onclick = () => saveEditUser(email);
+  openMo('addUserModal');
+}
+
+function closeAddUserModal() {
+  document.getElementById('newUserEmail').disabled = false;
+  closeMo('addUserModal');
+}
+
 async function addWhitelistUser() {
+  const name  = document.getElementById('newUserName').value.trim();
   const email = document.getElementById('newUserEmail').value.trim().toLowerCase();
   const role  = document.getElementById('newUserRole').value;
   const err   = document.getElementById('addUserError');
+  if (!name) { err.textContent = '請輸入姓名'; return; }
   if (!email || !email.includes('@')) { err.textContent = '請輸入有效的 Email'; return; }
   try {
     await db.collection(WHITELIST_COL).doc(email).set({
-      email, role,
+      email, name, role,
       addedAt: firebase.firestore.FieldValue.serverTimestamp(),
       addedBy: currentUser.email
     });
-    closeMo('addUserModal');
+    closeAddUserModal();
     renderWhitelistPage();
   } catch(e) {
     err.textContent = '新增失敗：' + e.message;
+  }
+}
+
+async function saveEditUser(email) {
+  const name = document.getElementById('newUserName').value.trim();
+  const role = document.getElementById('newUserRole').value;
+  const err  = document.getElementById('addUserError');
+  if (!name) { err.textContent = '請輸入姓名'; return; }
+  try {
+    await db.collection(WHITELIST_COL).doc(email).update({ name, role });
+    closeAddUserModal();
+    renderWhitelistPage();
+  } catch(e) {
+    err.textContent = '儲存失敗：' + e.message;
   }
 }
 
@@ -2304,7 +2347,7 @@ async function renderWhitelistPage() {
   const tbody = document.getElementById('wlTableBody');
   const empty = document.getElementById('wlEmpty');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="4" style="padding:16px;color:var(--text-3);text-align:center">載入中...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" style="padding:16px;color:var(--text-3);text-align:center">載入中...</td></tr>';
   const snap = await db.collection(WHITELIST_COL).orderBy('addedAt', 'asc').get();
   if (snap.empty) {
     tbody.innerHTML = '';
@@ -2316,11 +2359,18 @@ async function renderWhitelistPage() {
     const u = d.data();
     const ts = u.addedAt ? new Date(u.addedAt.seconds*1000).toLocaleDateString('zh-TW') : '—';
     const isSelf = u.email === currentUser.email;
+    const nameDisplay = u.name || '<span style="color:var(--text-3)">—</span>';
+    const escapedName = (u.name||'').replace(/'/g,"\\'");
+    const escapedEmail = u.email.replace(/'/g,"\\'");
     return `<tr>
-      <td>${u.email}${isSelf ? ' <span style="font-size:10px;color:var(--text-3)">(本帳號)</span>' : ''}</td>
+      <td style="font-weight:500">${nameDisplay}${isSelf ? ' <span style="font-size:10px;color:var(--text-3)">(本帳號)</span>' : ''}</td>
+      <td style="color:var(--text-2)">${u.email}</td>
       <td><span class="role-badge ${u.role==='admin'?'role-admin':'role-user'}">${u.role==='admin'?'管理員':'使用者'}</span></td>
       <td>${ts}</td>
-      <td>${isSelf ? '—' : `<button class="btn btn-danger btn-xs" onclick="removeWhitelistUser('${u.email}')">移除</button>`}</td>
+      <td style="display:flex;gap:4px">
+        <button class="btn btn-outline btn-xs" onclick="openEditUserModal('${escapedEmail}','${escapedName}','${u.role}')">編輯</button>
+        ${isSelf ? '' : `<button class="btn btn-danger btn-xs" onclick="removeWhitelistUser('${escapedEmail}')">移除</button>`}
+      </td>
     </tr>`;
   }).join('');
 }
